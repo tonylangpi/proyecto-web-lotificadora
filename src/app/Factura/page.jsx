@@ -17,6 +17,7 @@ const handleSubmit = async (e) => {
 const MiFactura = () => {
   return (
     <Form onSubmit={handleSubmit}>
+       <h4>MI RECIBO DE MES GASTOS</h4>
       <Row className="align-items-center justify-content-center">
        <Col xs="auto">
         <Form.Label htmlFor="inlineFormInput" >
