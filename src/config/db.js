@@ -12,6 +12,6 @@ conn.getConnection((error) => {
       console.error('El error de conexión es: ' + error);
       return;
     }
-    console.log('Conectado a la base de datos RAILWAY.');
+    console.log('Conectado a la base de datos');
   });
 export {conn}

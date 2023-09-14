@@ -1,7 +1,7 @@
 "use client";
 import './globals.css'
 import { useEffect } from "react";
-//import Container from 'react-bootstrap/Container';
+import Providers  from './Provider';
 import Navbar from '../components/Navbar' ;
 
 export const metadata = {
@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
   }, []);
   return (
     <html lang="es">
-      <body><Navbar/>{children}</body>
+      <body><Providers><Navbar/>{children}</Providers></body>
     </html>
   )
 }
