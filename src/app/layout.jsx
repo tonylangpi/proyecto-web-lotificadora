@@ -3,6 +3,7 @@ import './globals.css'
 import { useEffect } from "react";
 import Providers  from './Provider';
 import Navbar from '../components/Navbar' ;
+import Footer from '../components/Footer';
 
 export const metadata = {
   title: 'Lotificadora Gastos',
@@ -15,7 +16,7 @@ export default function RootLayout({ children }) {
   }, []);
   return (
     <html lang="es">
-      <body><Providers><Navbar/>{children}</Providers></body>
+      <body><Providers><Navbar/>{children}<Footer/></Providers></body>
     </html>
   )
 }

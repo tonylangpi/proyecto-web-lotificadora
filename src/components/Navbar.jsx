@@ -11,7 +11,7 @@ const Navegador = () => {
         return (
           <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-              <Link href={"/"} className="navbar-brand">
+              <Link href={"/dashboard"} className="navbar-brand">
                 <Image
                   src={Logo}
                   width={100}
@@ -103,7 +103,7 @@ const Navegador = () => {
                 <ul className="navbar-nav">
                   <li className="nav-item">
                     <Link href={"/"} className="nav-link text-dark active">
-                      INICIO
+                      Quienes Somos
                     </Link>
                   </li>
                   <li className="nav-item">
@@ -156,7 +156,7 @@ const Navegador = () => {
                 <ul className="navbar-nav">
                   <li className="nav-item">
                     <Link href={"/"} className="nav-link text-dark active">
-                      Nuestra Empresa
+                      Quienes Somos
                     </Link>
                   </li>
                   <li className="nav-item">
