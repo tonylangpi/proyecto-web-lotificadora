@@ -44,9 +44,9 @@ const Navegador = () => {
                     </a>
                     <ul className="dropdown-menu">
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <Link href={"/moduloPropiedades/propietarios"} className="dropdown-item">
                           Propietarios
-                        </a>
+                        </Link>
                       </li>
                       <li>
                         <a className="dropdown-item" href="#">

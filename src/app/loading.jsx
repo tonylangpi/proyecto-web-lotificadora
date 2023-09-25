@@ -1,6 +1,5 @@
-import React from "react";
-
-const loading = () => {
+"use client";
+const Loading = () => {
   return (
     <div className="text-center">
       <div className="spinner-grow text-success" role="status">
@@ -10,4 +9,4 @@ const loading = () => {
   );
 };
 
-export default loading;
+export default Loading;
