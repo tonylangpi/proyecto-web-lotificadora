@@ -23,3 +23,16 @@ export async function createPropietarios(datos){
         console.log(error); 
     }
 }
+
+export async function editPropietarios(datosEdit){
+    try {
+        const{data} = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}propietarios/edit`,datosEdit,{
+            headers:{
+                apiKey: process.env.NEXT_PUBLIC_API_KEY
+            }
+        });
+        return data; 
+    } catch (error) {
+        console.log(error); 
+    }
+}

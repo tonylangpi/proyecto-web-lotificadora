@@ -10,7 +10,7 @@ import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import {createPropietarios} from '../../services/moduloPropiedades.js'
+import {createPropietarios, editPropietarios} from '../../services/moduloPropiedades.js'
 export default function TablaPropietarios({ datos }) {
   const [show, setShow] = useState(false);
 
@@ -36,13 +36,10 @@ export default function TablaPropietarios({ datos }) {
       dpi: "",
     },
   });
-  const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
+  const handleSaveRowEdits = async ({ exitEditingMode,values }) => {
     //funciona que captura datos y actualiza los datos a la BD mediante la api
-    let res = await axios.put(
-      `${process.env.NEXT_PUBLIC_API_URL}categorias/updateCategoria`,
-      values
-    );
-    toast(res.data?.message, { style: { background: "yellow" } });
+    let res = await editPropietarios(values); 
+    toast(res?.message, { style: { background: "yellow" } });
     router.refresh();
     exitEditingMode();
   };
@@ -56,42 +53,51 @@ export default function TablaPropietarios({ datos }) {
         enableEditing: false, //disable editing on this column
         enableSorting: false,
         muiTableHeadCellProps: { sx: { color: "green" } }, //custom props
-        Cell: ({ renderedCellValue }) => <strong>{renderedCellValue}</strong>, //optional custom cell render
+        muiTableBodyCellEditTextFieldProps:{
+          required: true
+        },
+        Cell: ({ renderedCellValue }) => <strong>{renderedCellValue}</strong>, 
+
       },
       {
-        accessorKey: "nombre", //alternate way
+        accessorKey: "nombre", 
         header: "Nombre",
-        Header: <i style={{ color: "blue" }}>Nombres</i>, //optional custom markup
+        muiTableBodyCellEditTextFieldProps:{
+          required: true,
+          minLength:2,
+          maxLength:100
+        },
+        Header: <i style={{ color: "blue" }}>Nombres</i>, 
       },
       {
-        accessorKey: "apellido", //alternate way
+        accessorKey: "apellido", 
         header: "Apellidos",
-        Header: <i style={{ color: "yellos" }}>Apellidos</i>, //optional custom markup
+        Header: <i style={{ color: "yellos" }}>Apellidos</i>, 
       },
       {
-        accessorKey: "correo", //alternate way
+        accessorKey: "correo", 
         header: "Correo",
-        Header: <i style={{ color: "green" }}>Correo</i>, //optional custom markup
+        Header: <i style={{ color: "green" }}>Correo</i>, 
       },
       {
-        accessorKey: "telefono", //alternate way
+        accessorKey: "telefono", 
         header: "Telefono",
-        Header: <i style={{ color: "blue" }}>Telefono</i>, //optional custom markup
+        Header: <i style={{ color: "blue" }}>Telefono</i>, 
       },
       {
-        accessorKey: "direccion", //alternate way
+        accessorKey: "direccion", 
         header: "Direccion",
-        Header: <i style={{ color: "red" }}>Direccion</i>, //optional custom markup
+        Header: <i style={{ color: "red" }}>Direccion</i>, 
       },
       {
-        accessorKey: "dpi", //simple recommended way to define a column
+        accessorKey: "dpi", 
         header: "Dpi",
-        enableEditing: true, //disable editing on this column
+        enableEditing: true, 
         enableSorting: true,
-        muiTableHeadCellProps: { sx: { color: "green" } }, //custom props
+        muiTableHeadCellProps: { sx: { color: "green" } }, 
         Cell: ({ renderedCellValue }) => (
           <strong>{renderedCellValue || "-------"}</strong>
-        ), //optional custom cell render
+        ), 
       },
     ],
     []

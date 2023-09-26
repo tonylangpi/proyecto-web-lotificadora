@@ -11,7 +11,7 @@ const Navegador = () => {
         return (
           <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-              <Link href={"/dashboard"} className="navbar-brand">
+              <Link href="/dashboard" className="navbar-brand">
                 <Image
                   src={Logo}
                   width={100}
@@ -44,7 +44,7 @@ const Navegador = () => {
                     </a>
                     <ul className="dropdown-menu">
                       <li>
-                        <Link href={"/moduloPropiedades/propietarios"} className="dropdown-item">
+                        <Link href="/moduloPropiedades/propietarios" className="dropdown-item">
                           Propietarios
                         </Link>
                       </li>
@@ -57,7 +57,7 @@ const Navegador = () => {
                   </li>
                   <li className="nav-item">
                     <Link
-                      href={"/dashboard"}
+                      href="/dashboard"
                       className="nav-link text-dark active"
                     >
                       Modulo Facturas
