@@ -1,10 +1,12 @@
 "use client";
-const Loading = () => {
+"use client";
+export default function Loading() {
+  // You can add any UI inside Loading, including a Skeleton.
   return (
-    <div className="spinner-grow text-success" role="status">
-    <span className="visually-hidden">Cargando...</span>
-  </div>
-  )
+    <div className="text-center">
+      <div className="spinner-grow text-success" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  );
 }
-
-export default Loading

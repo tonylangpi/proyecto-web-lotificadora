@@ -10,7 +10,7 @@ import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
+import {createPropietarios} from '../../services/moduloPropiedades.js'
 export default function TablaPropietarios({ datos }) {
   const [show, setShow] = useState(false);
 
@@ -29,7 +29,7 @@ export default function TablaPropietarios({ datos }) {
     defaultValues: {
       nombre: "",
       apellido: "",
-      correo: "",
+      email: "",
       telefono: "",
       direccion: "",
       idUsuario: idUsuario,
@@ -97,14 +97,12 @@ export default function TablaPropietarios({ datos }) {
     []
   );
   //configuracion del envio de datos post crear un PROPIETARIO NUEVO
-  const onSubmit = handleSubmit(async (data) => {
+  const enviar = handleSubmit(async (data) => {
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}productos/createProducto`,
-        data
-      );
-      toast(res.data?.message);
+      const res = await createPropietarios(data);
+      toast(res?.message);
       reset();
+      handleClose();
       router.refresh();
     } catch (error) {
       console.log(error);
@@ -124,29 +122,28 @@ export default function TablaPropietarios({ datos }) {
           <Modal.Title>Datos de propietario nuevo</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={enviar}>
             <Row className="mb-3">
               <Form.Group as={Col} controlId="formGridNombres">
                 <Form.Label>Nombres</Form.Label>
                 <Form.Control
                   type="text"
+                  placeholder="Javier Jose"
                   {...register("nombre", {
                     required: {
                       value: true,
-                      message: "Nombres requerido",
+                      message: "Nombres requeridos",
                     },
-                    maxLength: 250,
+                    maxLength: 100,
                     minLength: 2,
                   })}
-                  placeholder="Javier Jose"
-                  name="nombre"
                 />
                 {errors.nombre && (
                   <span className="text-danger">{errors.nombre.message}</span>
                 )}
                 {errors.nombre?.type === "maxLength" && (
                   <span className="text-danger">
-                    El nombre no debe superar los 100 caracteres
+                    Los nombres no deben superar los 100 caracteres
                   </span>
                 )}
                 {errors.nombre?.type === "minLength" && (
@@ -160,8 +157,28 @@ export default function TablaPropietarios({ datos }) {
                 <Form.Control
                   type="text"
                   placeholder="Estrada Lopez"
-                  name="apellidos"
+                  {...register("apellido", {
+                    required: {
+                      value: true,
+                      message: "Apellidos requeridos",
+                    },
+                    maxLength: 100,
+                    minLength: 2,
+                  })}
                 />
+                  {errors.apellido && (
+                  <span className="text-danger">{errors.apellido.message}</span>
+                )}
+                {errors.apellido?.type === "maxLength" && (
+                  <span className="text-danger">
+                    Los apellidos no deben superar los 100 caracteres
+                  </span>
+                )}
+                {errors.apellido?.type === "minLength" && (
+                  <span className="text-danger">
+                    El apellido debe ser mayor a 2 caracteres
+                  </span>
+                )}
               </Form.Group>
             </Row>
             <Row className="mb-3">
@@ -170,8 +187,20 @@ export default function TablaPropietarios({ datos }) {
                 <Form.Control
                   type="email"
                   placeholder="asdfdf@gmail.com"
-                  name="correo"
+                  {...register("email", {
+                    required: {
+                      value: true,
+                      message: "Correo es requerido",
+                    },
+                    pattern: {
+                      value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                      message: "Correo no válido",
+                    },
+                  })}
                 />
+                {errors.email && (
+                  <span className="text-danger">{errors.email.message}</span>
+                )}
               </Form.Group>
               <Form.Group as={Col} controlId="formGridTelefono">
                 <Form.Label>Telefono</Form.Label>
@@ -179,17 +208,63 @@ export default function TablaPropietarios({ datos }) {
                   type="text"
                   placeholder="5523-1135"
                   name="telefono"
+                  {...register("telefono", {
+                    required: {
+                      value: true,
+                      message: "Telefono requeridos sin extension ni guiones",
+                    },
+                    maxLength: 8,
+                    minLength: 8,
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: "Telefono no válido, solo numeros",
+                    },
+                  })}
                 />
+                {errors.telefono && (
+                  <span className="text-danger">{errors.telefono.message}</span>
+                )}
+                {errors.telefono?.type === "maxLength" && (
+                  <span className="text-danger">
+                    el numero de telefono solo es de 8 digitos
+                  </span>
+                )}
+                {errors.telefono?.type === "minLength" && (
+                  <span className="text-danger">
+                    El numero de telefono debe tener minimo 8 caracteres
+                  </span>
+                )}
               </Form.Group>
             </Row>
             <Row className="mb-3">
               <Form.Group as={Col} controlId="formGridDireccion">
                 <Form.Label>Direccion</Form.Label>
                 <Form.Control
-                  type="email"
-                  placeholder="ZONA XXXD"
-                  name="direccion"
+                  as="textarea"
+                  placeholder="zona xxxd"
+                  style={{ height: "100px" }}
+                  {...register("direccion", {
+                    required: {
+                      value: true,
+                      message: "Direccion requerida",
+                    },
+                    maxLength: 250,
+                    minLength: 5,
+                  })}
                 />
+                 {errors.direccion && (
+                  <span className="text-danger">{errors.direccion.message}</span>
+                )}
+                {errors.direccion?.type === "maxLength" && (
+                  <span className="text-danger">
+                    La direccion tiene limite de 250 caracteres
+                  </span>
+                )}
+                {errors.direccion?.type === "minLength" && (
+                  <span className="text-danger">
+                    la direccion debe tener al menos 5 caracteres
+                  </span>
+                )}
               </Form.Group>
               <Form.Group as={Col} controlId="formGridDpi">
                 <Form.Label>DPI</Form.Label>
@@ -197,16 +272,41 @@ export default function TablaPropietarios({ datos }) {
                   type="text"
                   placeholder="3371309810822"
                   name="dpi"
+                  {...register("dpi", {
+                    required: {
+                      value: true,
+                      message: "dpi requerido y sin guiones ni espacios",
+                    },
+                    maxLength: 20,
+                    minLength: 13,
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: "DPI no válido, solo numeros",
+                    },
+                  })}
                 />
+                  {errors.dpi && (
+                  <span className="text-danger">{errors.dpi.message}</span>
+                )}
+                {errors.dpi?.type === "maxLength" && (
+                  <span className="text-danger">
+                    La dpi tiene limite de 20 caracteres
+                  </span>
+                )}
+                {errors.dpi?.type === "minLength" && (
+                  <span className="text-danger">
+                    el dpi debe tener al menos 13 caracteres
+                  </span>
+                )}
               </Form.Group>
             </Row>
+          <Button variant="primary" type="submit">Agregar</Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant="primary">Agregar</Button>
         </Modal.Footer>
       </Modal>
       <MaterialReactTable
