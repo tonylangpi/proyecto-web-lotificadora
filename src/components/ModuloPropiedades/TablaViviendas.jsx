@@ -11,11 +11,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-  createPropietarios,
-  editPropietarios,
+  createViviendas,
   updateStatusPropietarios,
 } from "../../services/moduloPropiedades.js";
-export default function TablaPropietarios({ datos, propie }) {
+export default function TablaViviendas({ datos, propie }) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false); //cierra modal de creacion de usuarios
   const handleShow = () => setShow(true); //abre modal de creacion de usuarios
@@ -39,27 +38,10 @@ export default function TablaPropietarios({ datos, propie }) {
     },
   });
 
-//   const handleSaveRowEdits = async ({ exitEditingMode, values }) => {
-//     //funciona que captura datos y actualiza los datos a la BD mediante la api
-//     if (
-//       values.idPropietario === "" ||
-//       values.nombre === "" ||
-//       values.dpi === "" ||
-//       values.direcion === "" ||
-//       values.correo === "" ||
-//       values.telefono === "" ||
-//       values.apellido === ""
-//     ) {
-//       toast("Faltan campos, no puedes enviar nada vacio", {
-//         style: { background: "red" },
-//       });
-//     } else {
-//       const res = await editPropietarios(values);
-//       toast(res?.message);
-//       router.refresh();
-//       exitEditingMode();
-//     }
-//   };
+  const handleSaveRowEdits = async ({ exitEditingMode, values, row }) => {
+     // datos[row.index] = values; 
+      console.log(row.index); 
+  };
 
   const columns = useMemo(
     //configuracion de las columnas que vienen en la consulta
@@ -104,12 +86,11 @@ export default function TablaPropietarios({ datos, propie }) {
   //configuracion del envio de datos post crear un PROPIETARIO NUEVO
     const enviar = handleSubmit(async (data) => {
       try {
-        //const res = await createPropietarios(data);
-        //toast(res?.message);
-        //reset();
-        console.log(data); 
-        //handleClose();
-        //router.refresh();
+        const res = await createViviendas(data);
+        toast(res?.message);
+        reset();
+        handleClose();
+        router.refresh();
       } catch (error) {
         console.log(error);
       }
@@ -265,7 +246,6 @@ export default function TablaPropietarios({ datos, propie }) {
         columns={columns}
         enableRowActions
         data={datos}
-        // onEditingRowSave={handleSaveRowEdits}
         renderRowActions={({ row, table }) => (
           <div className="d-flex p-2">
             <Button
@@ -290,7 +270,7 @@ export default function TablaPropietarios({ datos, propie }) {
             <Button
               className="btn btn-warning"
               onClick={() => {
-                table.setEditingRow(row);
+               router.push(`/moduloPropiedades/viviendas/${row.getValue("codigo")}`); 
               }}
             >
               <EditIcon />
