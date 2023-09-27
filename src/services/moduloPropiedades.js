@@ -1,4 +1,5 @@
 import axios from 'axios'; 
+/*MODULO DE PROPIETARIOS PETICIONES A LA API */
 export async function getPropietarios(){
     try {
         const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}propietarios/all`,{
@@ -38,6 +39,19 @@ export async function updateStatusPropietarios(id){
 export async function editPropietarios(datosEdit){ 
     try {
         const{data} = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}propietarios/edit`,datosEdit,{
+            headers:{
+                apiKey: process.env.NEXT_PUBLIC_API_KEY
+            }
+        });
+        return data; 
+    } catch (error) {
+        console.log(error); 
+    }
+}
+/*MODULO DE VIVIENDAS FUNCIONES DE API SERVICIOS */
+export async function getViviendasInfo(){
+    try {
+        const{data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}viviendas/all`,{
             headers:{
                 apiKey: process.env.NEXT_PUBLIC_API_KEY
             }

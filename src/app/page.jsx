@@ -14,6 +14,7 @@ export default function Home() {
                 width={500}
                 height={350}
                 alt="Imagen lotificacion"
+                priority={true}
               />
             </div>
             <div className="col-md-6 align-items-center">

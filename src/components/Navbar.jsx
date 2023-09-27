@@ -11,7 +11,7 @@ const Navegador = () => {
         return (
           <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-              <Link href="/dashboard" className="navbar-brand">
+              <Link  rel="preload" href="/dashboard"  className="navbar-brand">
                 <Image
                   src={Logo}
                   width={100}
@@ -33,7 +33,7 @@ const Navegador = () => {
               <div className="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul className="navbar-nav">
                   <li className="nav-item dropdown">
-                    <a
+                    <Link
                       className="nav-link dropdown-toggle"
                       href="#"
                       role="button"
@@ -41,17 +41,17 @@ const Navegador = () => {
                       aria-expanded="false"
                     >
                       Modulo Propiedades
-                    </a>
+                    </Link>
                     <ul className="dropdown-menu">
                       <li>
-                        <Link href="/moduloPropiedades/propietarios" className="dropdown-item">
+                        <Link  rel="preload" href="/moduloPropiedades/propietarios" className="dropdown-item">
                           Propietarios
                         </Link>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <Link  rel="preload" className="dropdown-item" href="/moduloPropiedades/viviendas">
                           Viviendas
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                   </li>

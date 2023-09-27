@@ -15,8 +15,7 @@ import {
   editPropietarios,
   updateStatusPropietarios,
 } from "../../services/moduloPropiedades.js";
-export default function TablaPropietarios({ datos }) {
-
+export default function TablaPropietarios({ datos, propie }) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false); //cierra modal de creacion de usuarios
   const handleShow = () => setShow(true); //abre modal de creacion de usuarios
@@ -31,111 +30,90 @@ export default function TablaPropietarios({ datos }) {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      nombre: "",
-      apellido: "",
-      email: "",
-      telefono: "",
-      direccion: "",
+      Codigo: "",
+      descripcion: "",
+      CantidadHabitantes: 0,
+      medidas: "",
+      idPropietario: 0,
       idUsuario: idUsuario,
-      dpi: "",
-      Estado: "ACTIVO",
     },
   });
 
-  const handleSaveRowEdits = async ({ exitEditingMode, values }) => {
-    //funciona que captura datos y actualiza los datos a la BD mediante la api
-    if (
-      values.idPropietario === "" ||
-      values.nombre === "" ||
-      values.dpi === "" ||
-      values.direcion === "" ||
-      values.correo === "" ||
-      values.telefono === "" ||
-      values.apellido === ""
-    ) {
-      toast("Faltan campos, no puedes enviar nada vacio", {
-        style: { background: "red" },
-      });
-    } else {
-      const res = await editPropietarios(values);
-      toast(res?.message);
-      router.refresh();
-      exitEditingMode();
-    }
-  };
+//   const handleSaveRowEdits = async ({ exitEditingMode, values }) => {
+//     //funciona que captura datos y actualiza los datos a la BD mediante la api
+//     if (
+//       values.idPropietario === "" ||
+//       values.nombre === "" ||
+//       values.dpi === "" ||
+//       values.direcion === "" ||
+//       values.correo === "" ||
+//       values.telefono === "" ||
+//       values.apellido === ""
+//     ) {
+//       toast("Faltan campos, no puedes enviar nada vacio", {
+//         style: { background: "red" },
+//       });
+//     } else {
+//       const res = await editPropietarios(values);
+//       toast(res?.message);
+//       router.refresh();
+//       exitEditingMode();
+//     }
+//   };
 
   const columns = useMemo(
     //configuracion de las columnas que vienen en la consulta
     () => [
       {
-        accessorKey: "idPropietario", //simple recommended way to define a column
-        header: "ID",
+        accessorKey: "codigo", //simple recommended way to define a column
+        header: "CODIGO VIVIENDA",
         enableEditing: false, //disable editing on this column
         enableSorting: false,
         muiTableHeadCellProps: { sx: { color: "green" } }, //custom props
         Cell: ({ renderedCellValue }) => <strong>{renderedCellValue}</strong>,
       },
       {
-        accessorKey: "nombre",
-        header: "Nombre",
-        Header: <i style={{ color: "blue" }}>Nombres</i>,
+        accessorKey: "descripcion",
+        header: "Descripcion de la vivienda",
+        Header: <i style={{ color: "blue" }}>Descripcion de la vivienda</i>,
       },
       {
-        accessorKey: "apellido",
-        header: "Apellidos",
-        Header: <i style={{ color: "yellos" }}>Apellidos</i>,
+        accessorKey: "CantidadHabitantes",
+        header: "CantidadHabitantes",
+        Header: <i style={{ color: "yellos" }}>Cantidad de Habitantes</i>,
       },
       {
-        accessorKey: "correo",
-        header: "Correo",
-        Header: <i style={{ color: "green" }}>Correo</i>,
+        accessorKey: "medidas",
+        header: "Medidas",
+        Header: <i style={{ color: "green" }}>Medidas</i>,
       },
       {
-        accessorKey: "telefono",
-        header: "Telefono",
-        Header: <i style={{ color: "blue" }}>Telefono</i>,
+        accessorKey: "NombreCompleto",
+        header: "Nombre de Propietario",
+        Header: <i style={{ color: "blue" }}>Propietario</i>,
       },
       {
-        accessorKey: "direccion",
-        header: "Direccion",
-        Header: <i style={{ color: "red" }}>Direccion</i>,
-      },
-      {
-        accessorKey: "dpi",
-        header: "Dpi",
-        enableEditing: true,
-        enableSorting: true,
-        muiTableHeadCellProps: { sx: { color: "green" } },
-        Cell: ({ renderedCellValue }) => (
-          <strong>{renderedCellValue || "-------"}</strong>
-        ),
-      },
-      {
-        accessorKey: "Estado",
-        header: "Estado",
-        enableEditing: false,
-        enableSorting: true,
-        muiTableHeadCellProps: { sx: { color: "green" } },
-        Cell: ({ renderedCellValue }) => (
-          <strong>{renderedCellValue || "-------"}</strong>
-        ),
+        accessorKey: "idPropietario",
+        header: "Codigo Propietario",
+        Header: <i style={{ color: "red" }}>Codigo Propietario</i>,
       },
     ],
     []
   );
 
   //configuracion del envio de datos post crear un PROPIETARIO NUEVO
-  const enviar = handleSubmit(async (data) => {
-    try {
-      const res = await createPropietarios(data);
-      toast(res?.message);
-      reset();
-      handleClose();
-      router.refresh();
-    } catch (error) {
-      console.log(error);
-    }
-  });
+    const enviar = handleSubmit(async (data) => {
+      try {
+        //const res = await createPropietarios(data);
+        //toast(res?.message);
+        //reset();
+        console.log(data); 
+        //handleClose();
+        //router.refresh();
+      } catch (error) {
+        console.log(error);
+      }
+    });
 
   return (
     <>
@@ -147,185 +125,127 @@ export default function TablaPropietarios({ datos }) {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Datos de propietario nuevo</Modal.Title>
+          <Modal.Title>Datos de la vivienda</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={enviar}>
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridNombres">
-                <Form.Label>Nombres</Form.Label>
+              <Form.Group as={Col} controlId="formGridCodigo">
+                <Form.Label>Codigo Vivienda</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Javier Jose"
-                  {...register("nombre", {
+                  placeholder="10-45"
+                  {...register("Codigo", {
                     required: {
                       value: true,
-                      message: "Nombres requeridos",
+                      message: "El codigo de la vivienda es requerido",
                     },
-                    maxLength: 100,
-                    minLength: 2,
+                    maxLength: 30,
+                    minLength: 3,
                   })}
                 />
-                {errors.nombre && (
-                  <span className="text-danger">{errors.nombre.message}</span>
+                {errors.Codigo && (
+                  <span className="text-danger">{errors.Codigo.message}</span>
                 )}
-                {errors.nombre?.type === "maxLength" && (
+                {errors.Codigo?.type === "maxLength" && (
                   <span className="text-danger">
-                    Los nombres no deben superar los 100 caracteres
+                    Los Codigos no deben superar los 30 caracteres
                   </span>
                 )}
-                {errors.nombre?.type === "minLength" && (
+                {errors.Codigo?.type === "minLength" && (
                   <span className="text-danger">
-                    El nombre debe ser mayor a 2 caracteres
+                    El codigo debe ser mayor o igual a 3 caracteres
                   </span>
                 )}
               </Form.Group>
-              <Form.Group as={Col} controlId="formGridApellidos">
-                <Form.Label>Apellidos</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Estrada Lopez"
-                  {...register("apellido", {
-                    required: {
-                      value: true,
-                      message: "Apellidos requeridos",
-                    },
-                    maxLength: 100,
-                    minLength: 2,
-                  })}
-                />
-                {errors.apellido && (
-                  <span className="text-danger">{errors.apellido.message}</span>
-                )}
-                {errors.apellido?.type === "maxLength" && (
-                  <span className="text-danger">
-                    Los apellidos no deben superar los 100 caracteres
-                  </span>
-                )}
-                {errors.apellido?.type === "minLength" && (
-                  <span className="text-danger">
-                    El apellido debe ser mayor a 2 caracteres
-                  </span>
-                )}
-              </Form.Group>
-            </Row>
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridCorreo">
-                <Form.Label>Correo</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="asdfdf@gmail.com"
-                  {...register("email", {
-                    required: {
-                      value: true,
-                      message: "Correo es requerido",
-                    },
-                    pattern: {
-                      value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                      message: "Correo no válido",
-                    },
-                  })}
-                />
-                {errors.email && (
-                  <span className="text-danger">{errors.email.message}</span>
-                )}
-              </Form.Group>
-              <Form.Group as={Col} controlId="formGridTelefono">
-                <Form.Label>Telefono</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="5523-1135"
-                  name="telefono"
-                  {...register("telefono", {
-                    required: {
-                      value: true,
-                      message: "Telefono requeridos sin extension ni guiones",
-                    },
-                    maxLength: 8,
-                    minLength: 8,
-                    pattern: {
-                      value: /^[0-9]+$/,
-                      message: "Telefono no válido, solo numeros",
-                    },
-                  })}
-                />
-                {errors.telefono && (
-                  <span className="text-danger">{errors.telefono.message}</span>
-                )}
-                {errors.telefono?.type === "maxLength" && (
-                  <span className="text-danger">
-                    el numero de telefono solo es de 8 digitos
-                  </span>
-                )}
-                {errors.telefono?.type === "minLength" && (
-                  <span className="text-danger">
-                    El numero de telefono debe tener minimo 8 caracteres
-                  </span>
-                )}
-              </Form.Group>
-            </Row>
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridDireccion">
-                <Form.Label>Direccion</Form.Label>
+              <Form.Group as={Col} controlId="formGridDescripcion">
+                <Form.Label>Descripcion Vivienda</Form.Label>
                 <Form.Control
                   as="textarea"
-                  placeholder="zona xxxd"
+                  placeholder="vivienda con 3 habitaciones 2 baños ...etc..."
                   style={{ height: "100px" }}
-                  {...register("direccion", {
+                  {...register("descripcion", {
                     required: {
                       value: true,
-                      message: "Direccion requerida",
+                      message: "Descripcion requerida",
                     },
                     maxLength: 250,
                     minLength: 5,
                   })}
                 />
-                {errors.direccion && (
+                {errors.descripcion && (
                   <span className="text-danger">
-                    {errors.direccion.message}
+                    {errors.descripcion.message}
                   </span>
                 )}
-                {errors.direccion?.type === "maxLength" && (
+                {errors.descripcion?.type === "maxLength" && (
                   <span className="text-danger">
-                    La direccion tiene limite de 250 caracteres
+                    La descripcion tiene limite de 250 caracteres
                   </span>
                 )}
-                {errors.direccion?.type === "minLength" && (
+                {errors.descripcion?.type === "minLength" && (
                   <span className="text-danger">
-                    la direccion debe tener al menos 5 caracteres
+                    la descripcion debe tener al menos 5 caracteres
                   </span>
                 )}
               </Form.Group>
-              <Form.Group as={Col} controlId="formGridDpi">
-                <Form.Label>DPI</Form.Label>
+            </Row>
+            <Row className="mb-3">
+              <Form.Group as={Col} controlId="formGridCantidadHabitantes">
+                <Form.Label>Cantidad de Habitantes</Form.Label>
                 <Form.Control
-                  type="text"
-                  placeholder="3371309810822"
-                  name="dpi"
-                  {...register("dpi", {
+                  type="number"
+                  min={0}
+                  {...register("CantidadHabitantes", {
                     required: {
                       value: true,
-                      message: "dpi requerido y sin guiones ni espacios",
+                      message:
+                        "Cantidad de habitantes de la vivienda es requerida",
                     },
-                    maxLength: 20,
-                    minLength: 13,
                     pattern: {
                       value: /^[0-9]+$/,
-                      message: "DPI no válido, solo numeros",
+                      message:
+                        "CantidadHabitantes no válido, son solo numeros no letras",
                     },
                   })}
                 />
-                {errors.dpi && (
-                  <span className="text-danger">{errors.dpi.message}</span>
-                )}
-                {errors.dpi?.type === "maxLength" && (
+                {errors.CantidadHabitantes && (
                   <span className="text-danger">
-                    La dpi tiene limite de 20 caracteres
+                    {errors.CantidadHabitantes.message}
                   </span>
                 )}
-                {errors.dpi?.type === "minLength" && (
+              </Form.Group>
+              <Form.Group as={Col} controlId="formGridPropietario">
+                <Form.Label>Propietario</Form.Label>
+                <Form.Select
+                  aria-label="Default select example"
+                  name="propietarios"
+                  {...register("idPropietario")}
+                >
+                  {propie.map((cat, index) => (
+                    <option key={index} value={cat.idPropietario}>
+                      {`${cat.nombre}  ${cat.apellido}`}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Row>
+            <Row className="mb-3">
+              <Form.Group as={Col} controlId="formGridMedidas">
+                <Form.Label>Medidas</Form.Label>
+                <Form.Control
+                  type="textarea"
+                  {...register("medidas", {
+                    required: {
+                      value: true,
+                      message:
+                        "las medidas son requeridas",
+                    }
+                  })}
+                />
+                {errors.medidas && (
                   <span className="text-danger">
-                    el dpi debe tener al menos 13 caracteres
+                    {errors.medidas.message}
                   </span>
                 )}
               </Form.Group>
@@ -345,7 +265,7 @@ export default function TablaPropietarios({ datos }) {
         columns={columns}
         enableRowActions
         data={datos}
-        onEditingRowSave={handleSaveRowEdits}
+        // onEditingRowSave={handleSaveRowEdits}
         renderRowActions={({ row, table }) => (
           <div className="d-flex p-2">
             <Button
