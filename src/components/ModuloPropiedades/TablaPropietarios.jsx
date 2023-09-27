@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Toaster, toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { MaterialReactTable } from "material-react-table";
@@ -10,12 +10,15 @@ import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import {createPropietarios, editPropietarios} from '../../services/moduloPropiedades.js'
+import {
+  createPropietarios,
+  editPropietarios,
+  updateStatusPropietarios
+} from "../../services/moduloPropiedades.js";
 export default function TablaPropietarios({ datos }) {
   const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false); //cierra modal de creacion de usuarios
+  const handleShow = () => setShow(true); //abre modal de creacion de usuarios
   const router = useRouter();
   const { data: session } = useSession();
   let idUsuario = session?.user?.id;
@@ -34,14 +37,30 @@ export default function TablaPropietarios({ datos }) {
       direccion: "",
       idUsuario: idUsuario,
       dpi: "",
+      Estado:"ACTIVO"
     },
   });
-  const handleSaveRowEdits = async ({ exitEditingMode,values }) => {
+
+  const handleSaveRowEdits = async ({ exitEditingMode, values }) => {
     //funciona que captura datos y actualiza los datos a la BD mediante la api
-    let res = await editPropietarios(values); 
-    toast(res?.message, { style: { background: "yellow" } });
-    router.refresh();
-    exitEditingMode();
+    if (
+      values.idPropietario === "" ||
+      values.nombre === "" ||
+      values.dpi === "" ||
+      values.direcion === "" ||
+      values.correo === "" ||
+      values.telefono === "" ||
+      values.apellido === ""
+    ) {
+      toast("Faltan campos, no puedes enviar nada vacio", {
+        style: { background: "red" },
+      });
+    } else {
+      const res = await editPropietarios(values);
+      toast(res?.message);
+      router.refresh();
+      exitEditingMode();
+    }
   };
 
   const columns = useMemo(
@@ -53,51 +72,52 @@ export default function TablaPropietarios({ datos }) {
         enableEditing: false, //disable editing on this column
         enableSorting: false,
         muiTableHeadCellProps: { sx: { color: "green" } }, //custom props
-        muiTableBodyCellEditTextFieldProps:{
-          required: true
-        },
-        Cell: ({ renderedCellValue }) => <strong>{renderedCellValue}</strong>, 
-
+        Cell: ({ renderedCellValue }) => <strong>{renderedCellValue}</strong>,
       },
       {
-        accessorKey: "nombre", 
+        accessorKey: "nombre",
         header: "Nombre",
-        muiTableBodyCellEditTextFieldProps:{
-          required: true,
-          minLength:2,
-          maxLength:100
-        },
-        Header: <i style={{ color: "blue" }}>Nombres</i>, 
+        Header: <i style={{ color: "blue" }}>Nombres</i>,
       },
       {
-        accessorKey: "apellido", 
+        accessorKey: "apellido",
         header: "Apellidos",
-        Header: <i style={{ color: "yellos" }}>Apellidos</i>, 
+        Header: <i style={{ color: "yellos" }}>Apellidos</i>,
       },
       {
-        accessorKey: "correo", 
+        accessorKey: "correo",
         header: "Correo",
-        Header: <i style={{ color: "green" }}>Correo</i>, 
+        Header: <i style={{ color: "green" }}>Correo</i>,
       },
       {
-        accessorKey: "telefono", 
+        accessorKey: "telefono",
         header: "Telefono",
-        Header: <i style={{ color: "blue" }}>Telefono</i>, 
+        Header: <i style={{ color: "blue" }}>Telefono</i>,
       },
       {
-        accessorKey: "direccion", 
+        accessorKey: "direccion",
         header: "Direccion",
-        Header: <i style={{ color: "red" }}>Direccion</i>, 
+        Header: <i style={{ color: "red" }}>Direccion</i>,
       },
       {
-        accessorKey: "dpi", 
+        accessorKey: "dpi",
         header: "Dpi",
-        enableEditing: true, 
+        enableEditing: true,
         enableSorting: true,
-        muiTableHeadCellProps: { sx: { color: "green" } }, 
+        muiTableHeadCellProps: { sx: { color: "green" } },
         Cell: ({ renderedCellValue }) => (
           <strong>{renderedCellValue || "-------"}</strong>
-        ), 
+        ),
+      },
+      {
+        accessorKey: "Estado",
+        header: "Estado",
+        enableEditing: false,
+        enableSorting: true,
+        muiTableHeadCellProps: { sx: { color: "green" } },
+        Cell: ({ renderedCellValue }) => (
+          <strong>{renderedCellValue || "-------"}</strong>
+        ),
       },
     ],
     []
@@ -172,7 +192,7 @@ export default function TablaPropietarios({ datos }) {
                     minLength: 2,
                   })}
                 />
-                  {errors.apellido && (
+                {errors.apellido && (
                   <span className="text-danger">{errors.apellido.message}</span>
                 )}
                 {errors.apellido?.type === "maxLength" && (
@@ -258,8 +278,10 @@ export default function TablaPropietarios({ datos }) {
                     minLength: 5,
                   })}
                 />
-                 {errors.direccion && (
-                  <span className="text-danger">{errors.direccion.message}</span>
+                {errors.direccion && (
+                  <span className="text-danger">
+                    {errors.direccion.message}
+                  </span>
                 )}
                 {errors.direccion?.type === "maxLength" && (
                   <span className="text-danger">
@@ -291,7 +313,7 @@ export default function TablaPropietarios({ datos }) {
                     },
                   })}
                 />
-                  {errors.dpi && (
+                {errors.dpi && (
                   <span className="text-danger">{errors.dpi.message}</span>
                 )}
                 {errors.dpi?.type === "maxLength" && (
@@ -306,7 +328,9 @@ export default function TablaPropietarios({ datos }) {
                 )}
               </Form.Group>
             </Row>
-          <Button variant="primary" type="submit">Agregar</Button>
+            <Button variant="primary" type="submit">
+              Agregar
+            </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -327,22 +351,16 @@ export default function TablaPropietarios({ datos }) {
               onClick={async () => {
                 if (
                   !confirm(
-                    `Deseas eliminar la categoria: ${row.getValue(
-                      "descripcion"
+                    `Deseas cambiar el estado: ${row.getValue(
+                      "nombre"
                     )}`
                   )
                 ) {
                   return;
                 }
-                let res = await axios.delete(
-                  `${
-                    process.env.NEXT_PUBLIC_API_URL
-                  }categorias/deleteCategoria/${row.getValue("idCategoria")}`
-                );
-                if (res.status === 204) {
-                  toast("Categoria Borrada", { style: { background: "red" } });
+                let res = await updateStatusPropietarios(row.getValue("idPropietario"))
+                  toast(res?.message, { style: { background: "red" } });
                   router.refresh();
-                }
               }}
             >
               <DeleteIcon />

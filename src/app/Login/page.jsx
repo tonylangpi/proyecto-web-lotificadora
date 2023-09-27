@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
-const LogCard = dynamic(() => import('../../components/Login'), { ssr: false, loading: () => <loading/> })
+import Spin from '../../components/Cargando';
+const LogCard = dynamic(() => import('../../components/Login'), { ssr: false, loading: () => <Spin/> })
 const Login = () => {
 
   return (

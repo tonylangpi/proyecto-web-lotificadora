@@ -1,9 +1,8 @@
-
+"use client"
+import Spinner from 'react-bootstrap/Spinner';
 const Cargando = () => {
   return (
-      <div className="spinner-grow text-success" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
+    <Spinner animation="grow" variant="success" />
   );
 };
 
