@@ -99,4 +99,17 @@ export async function EditDetalleViviendas(values){
     } catch (error) {
         console.log(error); 
     }
+};
+
+export async function DeleteViviendas(id){
+  try { 
+    const{data} = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}viviendas/delete/${id}`,{
+        headers:{
+            apiKey: process.env.NEXT_PUBLIC_API_KEY
+        }
+    });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
 }

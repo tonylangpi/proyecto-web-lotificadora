@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import {
   createViviendas,
   updateStatusPropietarios,
+  DeleteViviendas
 } from "../../services/moduloPropiedades.js";
 export default function TablaViviendas({ datos, propie }) {
   const [show, setShow] = useState(false);
@@ -250,13 +251,13 @@ export default function TablaViviendas({ datos, propie }) {
               onClick={async () => {
                 if (
                   !confirm(
-                    `Deseas cambiar el estado: ${row.getValue("nombre")}`
+                    `Deseas eliminar la vivienda con codigo: ${row.getValue("codigo")}`
                   )
                 ) {
                   return;
                 }
-                let res = await updateStatusPropietarios(
-                  row.getValue("idPropietario")
+                let res = await DeleteViviendas(
+                  row.getValue("codigo")
                 );
                 toast(res?.message, { style: { background: "red" } });
                 router.refresh();
