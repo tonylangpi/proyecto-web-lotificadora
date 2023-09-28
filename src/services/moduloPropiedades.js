@@ -87,3 +87,16 @@ export async function GetDetalleVivienda(codigo){
         console.log(error); 
     }
 }
+
+export async function EditDetalleViviendas(values){
+    try {
+        const{data} = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}viviendas/edit`,values,{
+            headers:{
+                apiKey: process.env.NEXT_PUBLIC_API_KEY
+            }
+        });
+        return data; 
+    } catch (error) {
+        console.log(error); 
+    }
+}

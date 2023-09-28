@@ -1,10 +1,12 @@
 'use client';
-import {Card, Form, Button, Row, Col} from 'react-bootstrap';
+import {Form, Button, Row, Col} from 'react-bootstrap';
+import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { useState } from 'react';
-const DetalleVivienda = ({detallevivienda}) => {
+import  {EditDetalleViviendas, editPropietarios}  from '../../services/moduloPropiedades.js'
+const DetalleVivienda = ({detallevivienda, propietarios}) => {
   const[detalles,setDetalles] = useState(detallevivienda);
   const router = useRouter(); 
     const { data: session } = useSession();
@@ -27,19 +29,26 @@ const DetalleVivienda = ({detallevivienda}) => {
       });
     const actualizar = handleSubmit(async (data) => {
         try {
-        
-          console.log(data); 
+           const res = await EditDetalleViviendas(data);
+           toast(res?.message);
+           router.refresh(); 
+           router.back();
         } catch (error) {
           console.log(error);
         }
       });
   return (
+    <>
+
+    <Toaster position="top-center" offset="80px" />
     <Form onSubmit={actualizar}>
             <Row className="mb-3">
               <Form.Group as={Col} controlId="formGridCodigo">
                 <Form.Label>Codigo Vivienda</Form.Label>
                 <Form.Control
                   type="text"
+                  disabled
+                  readOnly
                   {...register("Codigo", {
                     required: {
                       value: true,
@@ -126,7 +135,11 @@ const DetalleVivienda = ({detallevivienda}) => {
                   name="propietarios"
                   {...register("idPropietario")}
                 >
-                  <option>HOLLAAA</option>
+                   {propietarios.map((cat, index) => (
+                    <option key={index} value={cat.idPropietario}>
+                      {`${cat.nombre}  ${cat.apellido}`}
+                    </option>
+                  ))}
                 </Form.Select>
               </Form.Group>
             </Row>
@@ -159,6 +172,7 @@ const DetalleVivienda = ({detallevivienda}) => {
               Regresar
             </Button>
           </Form>
+    </>
   )
 }
 
