@@ -38,10 +38,7 @@ export default function TablaViviendas({ datos, propie }) {
     },
   });
 
-  const handleSaveRowEdits = async ({ exitEditingMode, values, row }) => {
-     // datos[row.index] = values; 
-      console.log(row.index); 
-  };
+
 
   const columns = useMemo(
     //configuracion de las columnas que vienen en la consulta

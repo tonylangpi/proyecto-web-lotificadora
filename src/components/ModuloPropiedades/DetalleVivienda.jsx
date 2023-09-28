@@ -3,10 +3,12 @@ import {Card, Form, Button, Row, Col} from 'react-bootstrap';
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
+import { useState } from 'react';
 const DetalleVivienda = ({detallevivienda}) => {
+  const[detalles,setDetalles] = useState(detallevivienda);
+  const router = useRouter(); 
     const { data: session } = useSession();
   let idUsuario = session?.user?.id;
-  console.log(detallevivienda); 
     const {
         register,
         handleSubmit,
@@ -15,11 +17,11 @@ const DetalleVivienda = ({detallevivienda}) => {
       } = useForm({
         mode: "onChange",
         defaultValues: {
-          Codigo: "",
-          descripcion: "",
-          CantidadHabitantes: 0,
-          medidas: "",
-          idPropietario: 0,
+          Codigo: detalles.codigo,
+          descripcion: detalles.descripcion,
+          CantidadHabitantes: detalles.CantidadHabitantes,
+          medidas: detalles.medidas,
+          idPropietario: detalles.idPropietario,
           idUsuario: idUsuario,
         },
       });
@@ -38,7 +40,6 @@ const DetalleVivienda = ({detallevivienda}) => {
                 <Form.Label>Codigo Vivienda</Form.Label>
                 <Form.Control
                   type="text"
-                  value={detallevivienda.codigo}
                   {...register("Codigo", {
                     required: {
                       value: true,
@@ -66,7 +67,6 @@ const DetalleVivienda = ({detallevivienda}) => {
                 <Form.Label>Descripcion Vivienda</Form.Label>
                 <Form.Control
                   as="textarea"
-                  value={detallevivienda.descripcion}
                   style={{ height: "100px" }}
                   {...register("descripcion", {
                     required: {
@@ -99,7 +99,6 @@ const DetalleVivienda = ({detallevivienda}) => {
                 <Form.Label>Cantidad de Habitantes</Form.Label>
                 <Form.Control
                   type="number"
-                  value={detallevivienda.CantidadHabitantes}
                   min={0}
                   {...register("CantidadHabitantes", {
                     required: {
@@ -136,7 +135,6 @@ const DetalleVivienda = ({detallevivienda}) => {
                 <Form.Label>Medidas</Form.Label>
                 <Form.Control
                   type="textarea"
-                  value={detallevivienda.medidas}
                   {...register("medidas", {
                     required: {
                       value: true,
@@ -154,6 +152,11 @@ const DetalleVivienda = ({detallevivienda}) => {
             </Row>
             <Button variant="warning" type="submit">
               Editar
+            </Button>
+            <Button variant="info" className='m-3' onClick={() => {
+                router.back(); 
+            }}>
+              Regresar
             </Button>
           </Form>
   )
