@@ -1,14 +1,15 @@
 "use client";
-import './globals.css'
+import "./globals.css";
 import { useEffect } from "react";
-import Providers  from './Provider';
-import Navbar from '../components/Navbar' ;
-import Footer from '../components/Footer';
+import Providers from "./Provider";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { SWRProvider } from "./swr-provider";
 
 export const metadata = {
-  title: 'Lotificadora Gastos',
-  description: 'Lotificadora gastos clientes y panel',
-}
+  title: "Lotificadora Gastos",
+  description: "Lotificadora gastos clientes y panel",
+};
 
 export default function RootLayout({ children }) {
   useEffect(() => {
@@ -16,7 +17,15 @@ export default function RootLayout({ children }) {
   }, []);
   return (
     <html lang="es">
-      <body><Providers><Navbar/>{children}<Footer/></Providers></body>
+      <body>
+        <Providers>
+          <SWRProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </SWRProvider>
+        </Providers>
+      </body>
     </html>
-  )
+  );
 }

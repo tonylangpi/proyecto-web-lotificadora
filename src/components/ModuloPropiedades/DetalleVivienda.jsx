@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { useState } from 'react';
-import  {EditDetalleViviendas, editPropietarios}  from '../../services/moduloPropiedades.js'
+import  {EditDetalleViviendas}  from '../../services/moduloPropiedades.js'
 const DetalleVivienda = ({detallevivienda, propietarios}) => {
   const[detalles,setDetalles] = useState(detallevivienda);
   const router = useRouter(); 
