@@ -21,7 +21,7 @@ const Viviendas = () => {
   const { data, mutate } = useSWR(
     `${process.env.NEXT_PUBLIC_API_URL}viviendas/all`,
     {
-      revalidateIfStale: false,
+      revalidateIfStale: true,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
     }
@@ -54,32 +54,38 @@ const Viviendas = () => {
         header: "CODIGO VIVIENDA",
         enableEditing: false, //disable editing on this column
         enableSorting: false,
+        size: 50,
         muiTableHeadCellProps: { sx: { color: "green" } }, //custom props
         Cell: ({ renderedCellValue }) => <strong>{renderedCellValue}</strong>,
       },
       {
         accessorKey: "descripcion",
         header: "Descripcion de la vivienda",
+        size: 50,
         Header: <i style={{ color: "blue" }}>Descripcion de la vivienda</i>,
       },
       {
         accessorKey: "CantidadHabitantes",
         header: "CantidadHabitantes",
+        size: 50,
         Header: <i style={{ color: "yellos" }}>Cantidad de Habitantes</i>,
       },
       {
         accessorKey: "medidas",
         header: "Medidas",
+        size: 100,
         Header: <i style={{ color: "green" }}>Medidas</i>,
       },
       {
         accessorKey: "NombreCompleto",
         header: "Nombre de Propietario",
+        size: 100,
         Header: <i style={{ color: "blue" }}>Propietario</i>,
       },
       {
         accessorKey: "idPropietario",
         header: "Codigo Propietario",
+        size: 100,
         Header: <i style={{ color: "red" }}>Codigo Propietario</i>,
       },
     ],
@@ -87,13 +93,13 @@ const Viviendas = () => {
   );
 
   //configuracion del envio de datos post crear un PROPIETARIO NUEVO
-  const enviar = handleSubmit(async (data) => {
+  const enviar = handleSubmit(async(data) => {
     try {
       const res = await createViviendas(data);
       toast(res?.message);
+      mutate();
       reset();
       handleClose();
-      mutate();
     } catch (error) {
       console.log(error);
     }
@@ -246,17 +252,21 @@ const Viviendas = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <h1>Viviendas</h1>
+      <h5>Viviendas</h5>
       {data?.viviendas ? (
-        <Card className="m-3">
-          <Card.Header>
-            REGISTROS
-          </Card.Header>
+        <Card className="m-2">
           <Card.Body>
             <MaterialReactTable
               columns={columns}
               enableRowActions
-              data={data.viviendas}
+              enableDensityToggle={false}
+              initialState={{ density: 'compact' }}
+              data={data.viviendas ? data.viviendas : []}
+              muiTableProps={{
+                sx: {
+                  border: "1px solid rgba(81, 81, 81, 1)",
+                },
+              }}
               renderRowActions={({ row, table }) => (
                 <div className="d-flex p-2">
                   <Button

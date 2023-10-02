@@ -1,47 +1,48 @@
-'use client';
-import {Form, Button, Row, Col} from 'react-bootstrap';
+"use client";
+import { Form, Button, Row, Col, Card } from "react-bootstrap";
 import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
-import { useState } from 'react';
-import  {EditDetalleViviendas}  from '../../services/moduloPropiedades.js'
-const DetalleVivienda = ({detallevivienda, propietarios}) => {
-  const[detalles,setDetalles] = useState(detallevivienda);
-  const router = useRouter(); 
-    const { data: session } = useSession();
+import { useState } from "react";
+import { EditDetalleViviendas } from "../../services/moduloPropiedades.js";
+const DetalleVivienda = ({ detallevivienda, propietarios }) => {
+  const [detalles, setDetalles] = useState(detallevivienda);
+  const router = useRouter();
+  const { data: session } = useSession();
   let idUsuario = session?.user?.id;
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-      } = useForm({
-        mode: "onChange",
-        defaultValues: {
-          Codigo: detalles.codigo,
-          descripcion: detalles.descripcion,
-          CantidadHabitantes: detalles.CantidadHabitantes,
-          medidas: detalles.medidas,
-          idPropietario: detalles.idPropietario,
-          idUsuario: idUsuario,
-        },
-      });
-    const actualizar = handleSubmit(async (data) => {
-        try {
-           const res = await EditDetalleViviendas(data);
-           toast(res?.message);
-           router.refresh(); 
-           router.back();
-        } catch (error) {
-          console.log(error);
-        }
-      });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      Codigo: detalles.codigo,
+      descripcion: detalles.descripcion,
+      CantidadHabitantes: detalles.CantidadHabitantes,
+      medidas: detalles.medidas,
+      idPropietario: detalles.idPropietario,
+      idUsuario: idUsuario,
+    },
+  });
+  const actualizar = handleSubmit(async (data) => {
+    try {
+      const res = await EditDetalleViviendas(data);
+      toast(res?.message);
+      router.push("/moduloPropiedades/viviendas");
+    } catch (error) {
+      console.log(error);
+    }
+  });
   return (
     <>
-
-    <Toaster position="top-center" offset="80px" />
-    <Form onSubmit={actualizar}>
+      <Toaster position="top-center" offset="80px" />
+      <Card className="m-3">
+        <Card.Header>EDITAR VIVIENDA</Card.Header>
+        <Card.Body>
+          <Form onSubmit={actualizar}>
             <Row className="mb-3">
               <Form.Group as={Col} controlId="formGridCodigo">
                 <Form.Label>Codigo Vivienda</Form.Label>
@@ -135,7 +136,7 @@ const DetalleVivienda = ({detallevivienda, propietarios}) => {
                   name="propietarios"
                   {...register("idPropietario")}
                 >
-                   {propietarios.map((cat, index) => (
+                  {propietarios.map((cat, index) => (
                     <option key={index} value={cat.idPropietario}>
                       {`${cat.nombre}  ${cat.apellido}`}
                     </option>
@@ -151,29 +152,32 @@ const DetalleVivienda = ({detallevivienda, propietarios}) => {
                   {...register("medidas", {
                     required: {
                       value: true,
-                      message:
-                        "las medidas son requeridas",
-                    }
+                      message: "las medidas son requeridas",
+                    },
                   })}
                 />
                 {errors.medidas && (
-                  <span className="text-danger">
-                    {errors.medidas.message}
-                  </span>
+                  <span className="text-danger">{errors.medidas.message}</span>
                 )}
               </Form.Group>
             </Row>
             <Button variant="warning" type="submit">
               Editar
             </Button>
-            <Button variant="info" className='m-3' onClick={() => {
-                router.back(); 
-            }}>
+            <Button
+              variant="info"
+              className="m-3"
+              onClick={() => {
+                router.back();
+              }}
+            >
               Regresar
             </Button>
           </Form>
+        </Card.Body>
+      </Card>
     </>
-  )
-}
+  );
+};
 
-export default DetalleVivienda
+export default DetalleVivienda;

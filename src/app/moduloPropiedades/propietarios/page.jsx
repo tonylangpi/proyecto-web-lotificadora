@@ -21,7 +21,7 @@ const Propietarios = () => {
   const { data, mutate } = useSWR(
     `${process.env.NEXT_PUBLIC_API_URL}propietarios/all`,
     {
-      revalidateIfStale: false,
+      revalidateIfStale: true,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
     }
@@ -77,37 +77,44 @@ const Propietarios = () => {
         header: "ID",
         enableEditing: false, //disable editing on this column
         enableSorting: false,
+        size: 50,
         muiTableHeadCellProps: { sx: { color: "green" } }, //custom props
         Cell: ({ renderedCellValue }) => <strong>{renderedCellValue}</strong>,
       },
       {
         accessorKey: "nombre",
         header: "Nombre",
+        size: 50,
         Header: <i style={{ color: "blue" }}>Nombres</i>,
       },
       {
         accessorKey: "apellido",
         header: "Apellidos",
+        size: 50,
         Header: <i style={{ color: "yellos" }}>Apellidos</i>,
       },
       {
         accessorKey: "correo",
         header: "Correo",
+        size: 50,
         Header: <i style={{ color: "green" }}>Correo</i>,
       },
       {
         accessorKey: "telefono",
         header: "Telefono",
+        size: 50,
         Header: <i style={{ color: "blue" }}>Telefono</i>,
       },
       {
         accessorKey: "direccion",
         header: "Direccion",
+        size: 50,
         Header: <i style={{ color: "red" }}>Direccion</i>,
       },
       {
         accessorKey: "dpi",
         header: "Dpi",
+        size: 50,
         enableEditing: true,
         enableSorting: true,
         muiTableHeadCellProps: { sx: { color: "green" } },
@@ -118,6 +125,7 @@ const Propietarios = () => {
       {
         accessorKey: "Estado",
         header: "Estado",
+        size: 50,
         enableEditing: false,
         enableSorting: true,
         muiTableHeadCellProps: { sx: { color: "green" } },
@@ -346,16 +354,21 @@ const Propietarios = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <h1>PROPIETARIOS</h1>
+      <h5>PROPIETARIOS</h5>
       {data ? (
-        <Card className="m-3" >
-          <Card.Header>registros</Card.Header>
+        <Card className="mt-2">
           <Card.Body>
             <MaterialReactTable
-            style={{width: '100%', height: 200}}
               columns={columns}
               enableRowActions
-              data={data}
+              enableDensityToggle={false}
+              initialState={{ density: "compact" }}
+              muiTableProps={{
+                sx: {
+                  border: "1px solid rgba(81, 81, 81, 1)",
+                },
+              }}
+              data={data ? data : []}
               onEditingRowSave={handleSaveRowEdits}
               renderRowActions={({ row, table }) => (
                 <div className="d-flex p-2">
