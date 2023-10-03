@@ -1,22 +1,16 @@
-'use client';
 import CardDetalleVivienda from '../../../../components/ModuloPropiedades/DetalleVivienda';
-import useSWR from "swr";
-const DetalleVivienda = ({params}) => {  
-  const { data } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}viviendas/detallevivienda/${params.idVivienda}`,
-    {
-      revalidateIfStale: true,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  );
+import { GetDetalleVivienda } from "../../../../services/moduloPropiedades.js";
+
+const DetalleVivienda = async({params}) => {  
+  const detalles = await GetDetalleVivienda(params.idVivienda);
+  console.log(detalles.detalleviviendas[0]);
   return (
     <>
       {
-        data ? (<CardDetalleVivienda detallevivienda={data?.detalleviviendas[0]} propietarios={data?.propietarios}/>) : (<h4>Validando información...</h4>)
+        detalles ? (<CardDetalleVivienda detallevivienda={detalles.detalleviviendas[0]} propietarios={detalles.propietarios}/>) : (<h2>Validando informacion</h2>)
       }
     </>
-  )
+  );
 }
 
 export default DetalleVivienda

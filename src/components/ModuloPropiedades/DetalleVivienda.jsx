@@ -4,10 +4,8 @@ import { Toaster, toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 import { EditDetalleViviendas } from "../../services/moduloPropiedades.js";
 const DetalleVivienda = ({ detallevivienda, propietarios }) => {
-  const [detalles, setDetalles] = useState(detallevivienda);
   const router = useRouter();
   const { data: session } = useSession();
   let idUsuario = session?.user?.id;
@@ -19,11 +17,11 @@ const DetalleVivienda = ({ detallevivienda, propietarios }) => {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      Codigo: detalles.codigo,
-      descripcion: detalles.descripcion,
-      CantidadHabitantes: detalles.CantidadHabitantes,
-      medidas: detalles.medidas,
-      idPropietario: detalles.idPropietario,
+      Codigo: detallevivienda ? detallevivienda.codigo : '',
+      descripcion: detallevivienda ? detallevivienda.descripcion : '',
+      CantidadHabitantes: detallevivienda ? detallevivienda.CantidadHabitantes : '',
+      medidas: detallevivienda? detallevivienda.medidas : '',
+      idPropietario: detallevivienda ? detallevivienda.idPropietario : '',
       idUsuario: idUsuario,
     },
   });
@@ -31,6 +29,8 @@ const DetalleVivienda = ({ detallevivienda, propietarios }) => {
     try {
       const res = await EditDetalleViviendas(data);
       toast(res?.message);
+      reset(); 
+      router.refresh();
       router.push("/moduloPropiedades/viviendas");
     } catch (error) {
       console.log(error);

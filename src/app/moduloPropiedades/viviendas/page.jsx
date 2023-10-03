@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Toaster, toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { MaterialReactTable } from "material-react-table";
