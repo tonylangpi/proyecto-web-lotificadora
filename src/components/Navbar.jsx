@@ -55,13 +55,28 @@ const Navegador = () => {
                       </li>
                     </ul>
                   </li>
-                  <li className="nav-item">
-                    <Link
-                      href="/dashboard"
-                      className="nav-link text-dark active"
+                  <li className="nav-item dropdown">
+                  <Link
+                      className="nav-link dropdown-toggle"
+                      href="#"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
                     >
                       Modulo Facturas
                     </Link>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <Link  rel="preload" href="/moduloFacturas" className="dropdown-item">
+                          Facturas
+                        </Link>
+                      </li>
+                      <li>
+                        <Link  rel="preload" className="dropdown-item" href="/moduloFacturas/encabezadoFact">
+                          Facturas Encabezados
+                        </Link>
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </div>
