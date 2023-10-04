@@ -1,24 +1,25 @@
 "use client";
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Toaster, toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { MaterialReactTable } from "material-react-table";
-import EditIcon from "@mui/icons-material/Edit";
+import SettingsIcon from '@mui/icons-material/Settings';
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Form, Col, Row, Button, Modal, Card } from "react-bootstrap";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import {
-  createPropietarios,
-  editPropietarios,
-  updateStatusPropietarios,
-} from "../../../services/moduloPropiedades.js";
+  createViviendas,
+  DeleteEncabezados
+} from "../../../services/moduloFacturas.js";
 import useSWR from "swr";
 
 const EncabezadoFactura = () => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false); //cierra modal de creacion de usuarios
     const handleShow = () => setShow(true); //abre modal de creacion de usuarios
+    const router = useRouter();
     const { data, mutate } = useSWR(
       `${process.env.NEXT_PUBLIC_API_URL}facturas/all`,
       {
@@ -44,27 +45,6 @@ const EncabezadoFactura = () => {
       },
     });
   
-    const handleSaveRowEdits = async ({ exitEditingMode, values }) => {
-      //funciona que captura datos y actualiza los datos a la BD mediante la api
-      if (
-        values.idPropietario === "" ||
-        values.nombre === "" ||
-        values.dpi === "" ||
-        values.direcion === "" ||
-        values.correo === "" ||
-        values.telefono === "" ||
-        values.apellido === ""
-      ) {
-        toast("Faltan campos, no puedes enviar nada vacio", {
-          style: { background: "red" },
-        });
-      } else {
-        const res = await editPropietarios(values);
-        toast(res?.message);
-        mutate();
-        exitEditingMode();
-      }
-    };
   
     const columns = useMemo(
       //configuracion de las columnas que vienen en la consulta
@@ -116,11 +96,10 @@ const EncabezadoFactura = () => {
     //configuracion del envio de datos post crear un PROPIETARIO NUEVO
     const enviar = handleSubmit(async (data) => {
       try {
-        // const res = await createPropietarios(data);
-        // toast(res?.message);
-        // mutate();
-        // reset();
-        console.log(data);
+        const res = await createViviendas(data);
+        toast(res?.message);
+        mutate();
+        reset();
         handleClose();
       } catch (error) {
         console.log(error);
@@ -142,12 +121,17 @@ const EncabezadoFactura = () => {
           <Modal.Body>
             <Form onSubmit={enviar}>
               <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridPropietario">
+              <Form.Group as={Col} controlId="formGridMes">
                 <Form.Label>SELECCIONA UN MES</Form.Label>
                 <Form.Select
                   aria-label="Default select example"
-                  name="propietarios"
-                  {...register("Mes")}
+                  name="Mes"
+                  {...register("Mes", {
+                    required: {
+                      value: true,
+                      message: "El mes del recibo es requerido",
+                    }
+                  })}
                 >
                     <option value={1}>ENERO</option>
                     <option value={2}>FEBRERO</option>
@@ -162,32 +146,58 @@ const EncabezadoFactura = () => {
                     <option value={11}>NOVIEMBRE</option>
                     <option value={12}>DICIEMBRE</option>
                 </Form.Select>
+                {errors.Mes && (
+                  <span className="text-danger">{errors.Mes.message}</span>
+                )}
               </Form.Group>
               </Row>
               <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridPropietario">
+              <Form.Group as={Col} controlId="formGridViviendas">
                 <Form.Label>SELECCIONA LA VIVIENDA</Form.Label>
                 <Form.Select
                   aria-label="Default select example"
-                  name="propietarios"
-                  {...register("idVivienda")}
+                  name="Viviendas"
+                  {...register("idVivienda",  {
+                    required: {
+                      value: true,
+                      message: "El codigo de la vivienda es requerido",
+                    }
+                  })}
                 >
-                    <option value={1}>ENERO</option>
-                    <option value={2}>FEBRERO</option>
+                     {data?.viviendas ? (
+                    data.viviendas.map((vivienda, index) => (
+                      <option key={index} value={vivienda.codigo}>
+                        {vivienda.codigo}
+                      </option>
+                    ))
+                  ) : (
+                    <option>Validando</option>
+                  )}
                 </Form.Select>
+                {errors.idVivienda && (
+                  <span className="text-danger">{errors.idVivienda.message}</span>
+                )}
               </Form.Group>
               </Row>
               <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridPropietario">
+              <Form.Group as={Col} controlId="formGridEstados">
                 <Form.Label>ESTADO FACTURA</Form.Label>
                 <Form.Select
                   aria-label="Default select example"
-                  name="propietarios"
-                  {...register("Estado")}
+                  name="Estados"
+                  {...register("Estado" ,{
+                    required: {
+                      value: true,
+                      message: "El Estado de la factura o recibo es requerido",
+                    }
+                  })}
                 >
                     <option value={1}>PAGADA</option>
                     <option value={2}>NO PAGADA</option>
                 </Form.Select>
+                {errors.Estado && (
+                  <span className="text-danger">{errors.Estado.message}</span>
+                )}
               </Form.Group>
               </Row>
               <Button variant="primary" type="submit">
@@ -215,8 +225,7 @@ const EncabezadoFactura = () => {
                     border: "1px solid rgba(81, 81, 81, 1)",
                   },
                 }}
-                data={data ? data : []}
-                onEditingRowSave={handleSaveRowEdits}
+                data={data.encabezados ? data.encabezados : []}
                 renderRowActions={({ row, table }) => (
                   <div className="d-flex p-2">
                     <Button
@@ -224,13 +233,13 @@ const EncabezadoFactura = () => {
                       onClick={async () => {
                         if (
                           !confirm(
-                            `Deseas cambiar el estado: ${row.getValue("nombre")}`
+                            `Deseas eliminar el encabezado: ${row.getValue("CodigoEncabezado")}`
                           )
                         ) {
                           return;
                         }
-                        let res = await updateStatusPropietarios(
-                          row.getValue("idPropietario")
+                        let res = await DeleteEncabezados(
+                          row.getValue("CodigoEncabezado")
                         );
                         toast(res?.message, { style: { background: "red" } });
                         mutate();
@@ -241,10 +250,12 @@ const EncabezadoFactura = () => {
                     <Button
                       className="btn btn-warning"
                       onClick={() => {
-                        table.setEditingRow(row);
-                      }}
+                      router.push(
+                        `/moduloFacturas/encabezadoFact/${row.getValue("CodigoEncabezado")}`
+                      );
+                    }}
                     >
-                      <EditIcon />
+                      <SettingsIcon />
                     </Button>
                   </div>
                 )}
