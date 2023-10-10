@@ -1,7 +1,7 @@
 import axios from 'axios'; 
 
 /* consultas al apartado de facturas encabezados */
-export async function createViviendas(datos){
+export async function createFacturasEncabezado(datos){
     try {
         const {data} = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}facturas/create`,datos,{
             headers:{
