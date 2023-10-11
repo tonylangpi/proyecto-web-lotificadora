@@ -53,3 +53,16 @@ export async function DeleteDetalles(id){
       console.log(error);
     }
   }
+  /* consulta que sirve al cliente para verificar su factura de mes actual */
+  export async function consultaFacturaCliente(datos){
+    try {
+        const {data} = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}facturas/consultafactcliente`,datos,{
+            headers:{
+                apiKey: process.env.NEXT_PUBLIC_API_KEY
+            }
+        }); 
+        return data; 
+    } catch (error) {
+        console.log(error); 
+    }
+}; 

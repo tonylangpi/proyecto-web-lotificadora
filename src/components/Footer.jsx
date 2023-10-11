@@ -7,7 +7,7 @@ const Footer = () => {
   return (() => {
     switch (status) {
       case "authenticated": //si el usuario esta autenticado retorna el dashboard
-        return <footer className="footer bg-dark text-white fixed-bottom">BIENVENIDO SISTEMAS GT</footer>;
+        return <footer className="footer bg-dark text-white fixed-bottom text-align-center">BIENVENIDO SISTEMAS LANGPI</footer>;
       case "loading":
         return (
           <footer className="footer bg-dark text-white p-2 fixed-bottom">

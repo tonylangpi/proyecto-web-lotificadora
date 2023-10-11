@@ -68,7 +68,7 @@ const Navegador = () => {
                     <ul className="dropdown-menu">
                       <li>
                         <Link  rel="preload" href="/moduloFacturas" className="dropdown-item">
-                          Facturas
+                          Facturas Pendientes Actuales
                         </Link>
                       </li>
                       <li>
