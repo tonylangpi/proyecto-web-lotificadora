@@ -26,3 +26,30 @@ export async function DeleteEncabezados(id){
       console.log(error);
     }
   }
+
+/*apartado para llamar los metodos para los detalles de las facturas  */
+export async function createDetallesFactura(datos){
+    try {
+        const {data} = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}facturas/createDetalles`,datos,{
+            headers:{
+                apiKey: process.env.NEXT_PUBLIC_API_KEY
+            }
+        }); 
+        return data; 
+    } catch (error) {
+        console.log(error); 
+    }
+}; 
+
+export async function DeleteDetalles(id){
+    try { 
+      const{data} = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}facturas/deleteDetalle/${id}`,{
+          headers:{
+              apiKey: process.env.NEXT_PUBLIC_API_KEY
+          }
+      });
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }

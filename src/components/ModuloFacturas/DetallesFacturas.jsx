@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import useSWR from "swr";
 import DeleteIcon from "@mui/icons-material/Delete";
 import OfflinePinIcon from "@mui/icons-material/OfflinePin";
+import {createDetallesFactura, DeleteDetalles}  from "../../services/moduloFacturas.js"
 const DetallesFacturas = ({ idEncabezado }) => {
   const [show, setShow] = useState(false);
   const [inputs, setInputs] = useState(false);
@@ -37,11 +38,11 @@ const DetallesFacturas = ({ idEncabezado }) => {
       idReciboGastoEncabezado: idEncabezado ? idEncabezado : "",
       idServicio: 0,
       descripcion: "",
-      kwt: 0,
-      tarifa: 0,
-      cargomensual: 0,
-      alumbrado: 0,
-      cuota: 0,
+      kwt: "",
+      tarifa: "",
+      cargomensual: "",
+      alumbrado: "",
+      cuota: "",
     },
   });
   const columns = useMemo(
@@ -104,10 +105,10 @@ const DetallesFacturas = ({ idEncabezado }) => {
   );
   const guardar = handleSubmit(async (data) => {
     try {
-      // const res = await EditDetalleViviendas(data);
-      // toast(res?.message);
-      console.log(data);
+      const res = await createDetallesFactura(data);
+      toast(res?.message);
       reset();
+      mutate(); 
     } catch (error) {
       console.log(error);
     }
@@ -282,13 +283,13 @@ const DetallesFacturas = ({ idEncabezado }) => {
                   </Form.Group>
                 </Row>
                 <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formGridPropietario">
+                  <Form.Group as={Col} controlId="formGridservicio">
                     <Form.Label>elige un servicio</Form.Label>
                     <Button variant="primary" onClick={handleShow}>
                       Seleccionar
                     </Button>
                   </Form.Group>
-                  <Form.Group as={Col} controlId="formGridCodigo">
+                  <Form.Group as={Col} controlId="formGridCodigoServicio">
                     <Form.Label>ID del servicio </Form.Label>
                     <Form.Control
                       type="text"
@@ -328,7 +329,7 @@ const DetallesFacturas = ({ idEncabezado }) => {
                   </Form.Group>
                 </Row>
                 <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formGridPropietario">
+                  <Form.Group as={Col} controlId="formGridVerificar">
                     <Button
                       variant="primary"
                       onClick={() => {
@@ -350,7 +351,7 @@ const DetallesFacturas = ({ idEncabezado }) => {
                 {inputs ? (
                   <>
                     <Row className="mb-3">
-                      <Form.Group as={Col} controlId="formGridDescripcion">
+                      <Form.Group as={Col} controlId="formGridkwh">
                         <Form.Label>Total kwh</Form.Label>
                         <Form.Control
                           type="text"
@@ -371,7 +372,7 @@ const DetallesFacturas = ({ idEncabezado }) => {
                           </span>
                         )}
                       </Form.Group>
-                      <Form.Group as={Col} controlId="formGridDescripcion">
+                      <Form.Group as={Col} controlId="formGridTarifa">
                         <Form.Label>Tarifa Q/kwh</Form.Label>
                         <Form.Control
                           type="text"
@@ -392,7 +393,7 @@ const DetallesFacturas = ({ idEncabezado }) => {
                           </span>
                         )}
                       </Form.Group>
-                      <Form.Group as={Col} controlId="formGridDescripcion">
+                      <Form.Group as={Col} controlId="formGridCargoMensual">
                         <Form.Label>Cargo mensual con IVA</Form.Label>
                         <Form.Control
                           type="text"
@@ -413,7 +414,7 @@ const DetallesFacturas = ({ idEncabezado }) => {
                           </span>
                         )}
                       </Form.Group>
-                      <Form.Group as={Col} controlId="formGridDescripcion">
+                      <Form.Group as={Col} controlId="formGridTasa">
                         <Form.Label>Tasa de alumbrado publico</Form.Label>
                         <Form.Control
                           type="text"
@@ -436,7 +437,7 @@ const DetallesFacturas = ({ idEncabezado }) => {
                       </Form.Group>
                     </Row>
                     <Row className="mb-3">
-                      <Form.Group as={Col} controlId="formGridDescripcion">
+                      <Form.Group as={Col} controlId="formGridCalcular">
                         <Button
                           variant="primary"
                           onClick={() => {
@@ -531,9 +532,18 @@ const DetallesFacturas = ({ idEncabezado }) => {
                     <Button
                       className="btn btn-danger"
                       onClick={async () => {
-                        setValue("idVivienda", row.getValue("codigo"));
-                        handleClose();
-                      }}
+                        if (
+                        !confirm(
+                          `Deseas eliminar el detalle`
+                        )
+                      ) {
+                        return;
+                      }
+                       
+                      let res = await DeleteDetalles(row.getValue("idDetalle"));
+                      toast(res?.message, { style: { background: "red" } });
+                      mutate();
+                    }}
                     >
                       <DeleteIcon />
                     </Button>
