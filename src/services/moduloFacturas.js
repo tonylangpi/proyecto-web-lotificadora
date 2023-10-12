@@ -66,3 +66,15 @@ export async function DeleteDetalles(id){
         console.log(error); 
     }
 }; 
+export async function enviarCorreoPropietario(datos){
+    try {
+        const {data} = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}facturas/sendmail`,datos,{
+            headers:{
+                apiKey: process.env.NEXT_PUBLIC_API_KEY
+            }
+        }); 
+        return data; 
+    } catch (error) {
+        console.log(error); 
+    }
+}; 
