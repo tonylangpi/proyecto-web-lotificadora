@@ -89,6 +89,12 @@ const EncabezadoFactura = () => {
         header: "fecha_recibo",
         size: 50,
         Header: <i style={{ color: "red" }}>Fecha de Emision</i>,
+      },
+      {
+        accessorKey: "totalRecibo",
+        header: "totalRecibo",
+        size: 50,
+        Header: <i style={{ color: "red" }}>Total a Pagar</i>,
       }
     ],
     []

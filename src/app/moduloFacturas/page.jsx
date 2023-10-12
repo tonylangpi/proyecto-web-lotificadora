@@ -3,22 +3,20 @@ import React, { useMemo } from "react";
 import { Toaster, toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { MaterialReactTable } from "material-react-table";
-import ContactMailIcon from '@mui/icons-material/ContactMail';
-import {  Button, Card } from "react-bootstrap";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
+import { Button, Card } from "react-bootstrap";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
-// import {
-//   createViviendas,
-//   DeleteViviendas,
-// } from "../../../services/moduloPropiedades.js";
+import {
+ enviarCorreoPropietario
+} from "../../services/moduloFacturas.js";
 const ModuloFacturas = () => {
-      const date = new Date();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
+  const date = new Date();
+  const year = date.getFullYear();
   const { data, mutate } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}facturas/facturasPendientesMes?mes=${month}&year=${year}`,
+    `${process.env.NEXT_PUBLIC_API_URL}facturas/facturasPendientesMes/${year}`,
     {
       revalidateIfStale: true,
       revalidateOnFocus: false,
@@ -84,11 +82,11 @@ const ModuloFacturas = () => {
   );
   return (
     <>
-    <Toaster position="top-center" offset="100px" />
+      <Toaster position="top-center" offset="100px" />
       {data ? (
         <Card className="mt-2">
           <Card.Body>
-          <h4>FACTURAS DEL MES ACTUAL PENDIENTES DE PAGO</h4>
+            <h4>FACTURAS DEL MES ACTUAL PENDIENTES DE PAGO</h4>
             <MaterialReactTable
               columns={columns}
               enableRowActions
@@ -107,12 +105,24 @@ const ModuloFacturas = () => {
                     onClick={async () => {
                       if (
                         !confirm(
-                          `Deseas enviar un correo al propietario : ${row.getValue("Propietario")}`
+                          `Deseas enviar un correo al propietario: ${row.getValue(
+                            "Propietario"
+                          )}`
                         )
                       ) {
                         return;
                       }
-                      toast("Correo enviado con la factura al propietario", { style: { background: "red" } });
+                      const date = new Date();
+                      const month = date.getMonth() + 1;
+                      const year = date.getFullYear();
+                      let info = {
+                        correo: row.getValue("CorreoPropietario"),
+                        viviendacod: row.getValue("CodVivienda"),
+                        mes:month,
+                        year: year
+                      };
+                      const res = await enviarCorreoPropietario(info);
+                      toast(res?.message, { style: { background: "green" } });
                     }}
                   >
                     <ContactMailIcon />
@@ -220,7 +230,7 @@ const ModuloFacturas = () => {
         <h5>Cargando...</h5>
       )}
     </>
-  )
-}
+  );
+};
 
-export default ModuloFacturas
+export default ModuloFacturas;
