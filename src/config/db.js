@@ -1,11 +1,12 @@
 //import mysql from 'serverless-mysql'
 import {createPool} from 'mysql2/promise'
+const {HOST, USER, PASS, PORT, DATABASE} = process.env
 const conn = createPool({
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASS,
-    port:3306,
-    database:process.env.DATABASE
+    host: HOST,
+    user: USER,
+    password: PASS,
+    port:PORT,
+    database:DATABASE
 });
 conn.getConnection((error) => {
     if (error) {
