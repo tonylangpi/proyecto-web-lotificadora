@@ -1,8 +1,11 @@
 "use client";
+import cx from 'classnames';
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import {Card} from 'react-bootstrap';
+import styles from './login.module.css';
+// import {Card} from 'react-bootstrap';
+// import Image from "next/image";
 const CardLogin = () => {
     const [error, setError] = useState("");
     const router = useRouter();
@@ -26,44 +29,26 @@ const CardLogin = () => {
   };
   return (
      <>
-      <Card className='m-5'>
-      <Card.Header>
-         Iniciar sesión solo Admins
-      </Card.Header>
-      <Card.Body>
-      <form onSubmit={handleSubmit}>
-       {error && (
+     <section className={styles.bgcolor}>
+     <main className={cx(styles["form-signin"],"text-center","mt-5")}>
+        <form onSubmit={handleSubmit}>
+        {error && (
             <div className="bg-danger text-white p-2 mb-2">{error}</div>
           )}
-        <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">
-            Correo
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-            name="email"
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label">
-            clave
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            id="exampleInputPassword1"
-            name="password"
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          ingresar
-        </button>
-      </form>
-      </Card.Body>
-    </Card>
+          <h1 className="h3 mb-3 fw-normal">Iniciar Sesion</h1>
+      
+          <div className="form-floating">
+            <input type="email" className="form-control" id="floatingInput" required placeholder="name@example.com" name="email" />
+            <label htmlFor="floatingInput">Ingresa Correo</label>
+          </div>
+          <div className="form-floating">
+            <input type="password" className="form-control" id="floatingPassword" required placeholder="Password" name="password" />
+            <label htmlFor="floatingPassword">Contraseña</label>
+          </div>
+          <button className="w-100 btn btn-lg btn-success" type="submit">Ingresar</button>
+        </form>
+      </main>
+     </section>
      </>
   )
 }
