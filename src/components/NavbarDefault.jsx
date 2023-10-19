@@ -32,9 +32,13 @@ const NavbarDefault = ({ status }) => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
-        <Link href={"/"} className="navbar-brand">
+      {
+        status == "authenticated" ? (<Link href={"/dashboard"} className="navbar-brand">
           <Image src={Logo} width={100} height={80} alt="Imagen lotificacion" />
-        </Link>
+        </Link>) : (<Link href={"/"} className="navbar-brand">
+          <Image src={Logo} width={100} height={80} alt="Imagen lotificacion" />
+        </Link>)
+      }
         <button
           className="navbar-toggler"
           type="button"
@@ -61,17 +65,17 @@ const NavbarDefault = ({ status }) => {
                       {item.title}
                     </Link>
                     <ul className="dropdown-menu">
-                      {item?.submenu?.map((sub,idx) => {
-                        <li key={idx}>
+                      { item.submenu ? item.submenu.map((row,index) => ( 
+                        <li key={index}>
                           <Link
                             rel="preload"
-                            href={sub.path}
+                            href={row.path}
                             className="dropdown-item"
                           >
-                            {sub.title}
+                            {row.title}
                           </Link>
-                        </li>;
-                      })}
+                        </li>
+              )) : (null)}
                     </ul>
                   </li>
                 ))
