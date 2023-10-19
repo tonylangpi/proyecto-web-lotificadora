@@ -9,10 +9,10 @@
              0 0  0 2px rgb(190, 190, 190),
              0.3em 0.3em 1em rgba(0,0,0,0.3);
   }
-  .form-signin:hover {
+  /* .form-signin:hover {
     transform: scale(1.05);
     border: 1px solid black;
-  }
+  } */
 .bgcolor{
   background-image: url('https://parajesdemaza.com/images/lomas2.png'); /* Reemplaza esta URL con la de tu imagen */
   background-size:auto;

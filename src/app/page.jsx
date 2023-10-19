@@ -1,24 +1,28 @@
 "use client";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
-import Image from "next/image";
-import Banner from "../../public/imageLanding.jpg";
+// import Image from "next/image";
+// import Banner from "../../public/imageLanding.jpg";
 import stylesP from "./formas.module.css";
 const beneficios  = [ 
   {
     titulo: "Buen clima",
-    imagen: 'https://parajesdemaza.com/images/buen-clima.jpg'
+    imagen: 'https://parajesdemaza.com/images/buen-clima.jpg',
+    description:"Contamos con un buen clima, rodeado de areas verdes y arboles que refresacan el ambiente"
   },
   {
     titulo:"Centrico",
-    imagen:'https://parajesdemaza.com/images/ciudad.png'
+    imagen:'https://parajesdemaza.com/images/ciudad.png',
+    description:"Estamos a pocos  km del centro de la ciudad"
   },
   {
     titulo:"Rodeado de naturaleza",
-    imagen:'https://parajesdemaza.com/images/naturaleza.png'
+    imagen:'https://parajesdemaza.com/images/naturaleza.png',
+    description:"Contamos con vegetación boscosa que refresca tu vivienda"
   },
   {
     titulo:"Areas verdes y recreacion familiar",
-    imagen:'https://parajesdemaza.com/images/areas-recreativas.jpg'
+    imagen:'https://parajesdemaza.com/images/areas-recreativas.jpg',
+    description:"Hemos construido areas de recreación para que la pases bien con tu familia"
   }
 ]
 export default function Home() {
@@ -48,6 +52,7 @@ export default function Home() {
           <div className={stylesP.tarjetaContent}>
              <img className={stylesP.image}  src={bene.imagen} alt="beneficios"/>
             <h5 class={stylesP.tarjetaTitle}>{bene.titulo}</h5>
+            <p>{bene.description}</p>
           </div>
         </div>)
         })

@@ -29,7 +29,7 @@ const Footer = () => {
         );
       case "unauthenticated":
         return (
-          <footer className="footer bg-success bg-gradient text-white p-2 fixed-bottom rounded-top shadow ">
+          <footer className="footer bg-success bg-gradient text-white p-2  rounded-top shadow ">
             <div className="row d-flex justify-content-center">
               <div className="col-md-3">
                 <h3>Contacto</h3>

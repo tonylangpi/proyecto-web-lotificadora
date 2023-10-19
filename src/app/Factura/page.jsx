@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { consultaFacturaCliente } from "../../services/moduloFacturas.js";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
+import StylesFact from './tabs.module.css'
 const MiFactura = () => {
   const [data, setData] = useState([]);
   const {
@@ -70,9 +71,9 @@ const MiFactura = () => {
             )}
           </Col>
           <Col xs="auto">
-            <Button type="submit" className="mb-2">
+            <button type="submit" className={StylesFact.Btn}>
               Buscar
-            </Button>
+            </button>
           </Col>
         </Row>
       </Form>
