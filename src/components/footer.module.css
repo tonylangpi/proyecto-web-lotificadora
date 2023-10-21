@@ -2,6 +2,7 @@
     background: #282828;
     color: #828282;
     margin-top:20px;
+    padding: 20px;
   }
   .mainFooter .contenedor {
     display: flex;
@@ -14,8 +15,8 @@
     text-transform: uppercase;
   }
   .column5025 {
-    width: 49%;
-    padding: 20px;
+    width: 20%;
+    padding: 15px;
   }
   .footerAuthor{
     text-align: right;

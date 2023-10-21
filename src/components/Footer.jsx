@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import StylesFooter from "./footer.module.css";
 import Link from "next/link";
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
@@ -9,6 +10,7 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import Logo from '../../public/Servihogar.png';
 const Footer = () => {
   const { status } = useSession();
   return (() => {
@@ -24,7 +26,7 @@ const Footer = () => {
           <footer className={StylesFooter.mainFooter}>
             <div className={StylesFooter.contenedor}>
               <div className={StylesFooter.column5025}>
-                <img src="https://parajesdemaza.com/images/logo2.png" />
+              <Image src={Logo} width={150} height={150} alt="Imagen lotificacion" />
                 <p className={StylesFooter.footerTxt}>
                   Buscamos que vivas tranquilamente con tu familia
                 </p>
@@ -105,7 +107,7 @@ const Footer = () => {
           <footer className={StylesFooter.mainFooter}>
             <div className={StylesFooter.contenedor}>
               <div className={StylesFooter.column5025}>
-                <img src="https://parajesdemaza.com/images/logo2.png" />
+              <Image src={Logo} width={150} height={150} alt="Imagen lotificacion" />
                 <p className={StylesFooter.footerTxt}>
                   Buscamos que vivas tranquilamente con tu familia
                 </p>
@@ -186,7 +188,7 @@ const Footer = () => {
           <footer className={StylesFooter.mainFooter}>
             <div className={StylesFooter.contenedor}>
               <div className={StylesFooter.column5025}>
-                <img src="https://parajesdemaza.com/images/logo2.png" />
+              <Image src={Logo} width={150} height={150} alt="Imagen lotificacion" />
                 <p className={StylesFooter.footerTxt}>
                   Buscamos que vivas tranquilamente con tu familia
                 </p>

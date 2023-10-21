@@ -1,7 +1,7 @@
 .form-signin {
     width: 100%;
     max-width: 330px;
-    padding: 15px;
+    padding: 5px;
     margin: auto;
     border-radius: 10px;
     transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -13,11 +13,10 @@
     transform: scale(1.05);
     border: 1px solid black;
   } */
-.bgcolor{
-  background-image: url('https://parajesdemaza.com/images/lomas2.png'); /* Reemplaza esta URL con la de tu imagen */
-  background-size:auto;
-  background-position: center;
-  background-repeat: no-repeat;
+
+.image{
+  width: 100px;
+  height: 100px;
 }
   .form-signin .form-floating:focus-within {
     z-index: 2;

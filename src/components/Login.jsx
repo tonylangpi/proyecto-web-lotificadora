@@ -31,6 +31,7 @@ const CardLogin = () => {
      <>
      <section className={styles.bgcolor}>
      <main className={cx(styles["form-signin"],"text-center","mt-5")}>
+     <img className={styles.image} src="https://i.ibb.co/B25Hmjd/Servis.png"/>
         <form onSubmit={handleSubmit}>
         {error && (
             <div className="bg-danger text-white p-2 mb-2">{error}</div>

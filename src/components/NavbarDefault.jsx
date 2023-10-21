@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "../../public/logomaza.jpg";
+import Logo from "../../public/Servihogar.png";
 import { signOut } from "next-auth/react";
 const NavbarDefault = ({ status }) => {
   const menuAuth = [
@@ -34,9 +34,9 @@ const NavbarDefault = ({ status }) => {
       <div className="container-fluid">
       {
         status == "authenticated" ? (<Link href={"/dashboard"} className="navbar-brand">
-          <Image src={Logo} width={100} height={80} alt="Imagen lotificacion" />
+          <Image src={Logo} width={100} height={100} alt="Imagen lotificacion" />
         </Link>) : (<Link href={"/"} className="navbar-brand">
-          <Image src={Logo} width={100} height={80} alt="Imagen lotificacion" />
+          <Image src={Logo} width={100} height={100} alt="Imagen lotificacion" />
         </Link>)
       }
         <button
