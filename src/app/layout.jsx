@@ -22,6 +22,7 @@ export default function RootLayout({ children }) {
           <SWRProvider>
             <Navbar />
             {children}
+            <Footer/>
           </SWRProvider>
         </Providers>
       </body>
