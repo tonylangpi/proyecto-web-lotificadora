@@ -46,7 +46,7 @@ const MiFactura = () => {
     <>
     <Toaster position="top-center" offset="100px" />
       <Form onSubmit={enviar}>
-        <h4>MI RECIBO DE MES GASTOS</h4>
+        <h4>VER MI FACTURA</h4>
         <Row className="align-items-center justify-content-center">
           <Col xs="auto">
             <Form.Label htmlFor="inlineFormInput">

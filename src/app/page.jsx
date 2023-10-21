@@ -7,7 +7,7 @@ const beneficios  = [
   {
     titulo: "Buen clima",
     imagen: 'https://parajesdemaza.com/images/buen-clima.jpg',
-    description:"Contamos con un buen clima, rodeado de areas verdes y arboles que refresacan el ambiente"
+    description:"Contamos con un buen clima, rodeado de areas verdes y arboles que refrescan el ambiente"
   },
   {
     titulo:"Centrico",
@@ -51,7 +51,7 @@ export default function Home() {
           return(<div key={index} className={stylesP.tarjeta}>
           <div className={stylesP.tarjetaContent}>
              <img className={stylesP.image}  src={bene.imagen} alt="beneficios"/>
-            <h5 class={stylesP.tarjetaTitle}>{bene.titulo}</h5>
+            <h5 className={stylesP.tarjetaTitle}>{bene.titulo}</h5>
             <p>{bene.description}</p>
           </div>
         </div>)

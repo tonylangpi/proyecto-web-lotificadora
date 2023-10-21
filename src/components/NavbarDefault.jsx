@@ -16,7 +16,7 @@ const NavbarDefault = ({ status }) => {
       title: "Modulo Facturas",
       path: "",
       submenu: [
-        { title: "Facturas Pendientes Actuales", path: "/moduloFacturas" },
+        { title: "Reporte de facturas no pagadas", path: "/moduloFacturas" },
         {
           title: "Facturas Encabezados",
           path: "/moduloFacturas/encabezadoFact",
