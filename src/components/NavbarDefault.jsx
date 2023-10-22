@@ -10,6 +10,7 @@ const NavbarDefault = ({ status }) => {
       submenu: [
         { title: "Propietarios", path: "/moduloPropiedades/propietarios" },
         { title: "viviendas", path: "/moduloPropiedades/viviendas" },
+        { title: "Servicios", path: "/moduloPropiedades/servicios" },
       ],
     },
     {

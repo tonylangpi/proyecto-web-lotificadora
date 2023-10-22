@@ -116,7 +116,7 @@ const ModuloFacturas = () => {
                       const month = date.getMonth() + 1;
                       const year = date.getFullYear();
                       let info = {
-                        correo: row.getValue("CorreoPropietario"),
+                        correo: row.getValue("correo"),
                         viviendacod: row.getValue("CodVivienda"),
                         mes:month,
                         year: year

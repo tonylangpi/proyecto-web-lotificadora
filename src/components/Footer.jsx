@@ -33,10 +33,10 @@ const Footer = () => {
               </div>
               <div className={StylesFooter.column5025}>
                 <h2 className={StylesFooter.footerTitle}>Links</h2>
-                <nav class="navbar navbar-expand-lg bg-body-dark">
-                  <div class="container-fluid">
+                <nav className="navbar navbar-expand-lg bg-body-dark">
+                  <div className="container-fluid">
                     <button
-                      class="navbar-toggler"
+                      className="navbar-toggler"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#navbarNavAltMarkup"
@@ -44,20 +44,20 @@ const Footer = () => {
                       aria-expanded="false"
                       aria-label="Toggle navigation"
                     >
-                      <span class="navbar-toggler-icon"></span>
+                      <span className="navbar-toggler-icon"></span>
                     </button>
                     <div
-                      class="collapse navbar-collapse"
+                      className="collapse navbar-collapse"
                       id="navbarNavAltMarkup"
                     >
-                      <div class="navbar-nav">
-                        <Link class="nav-link text-light" aria-current="page" href="/">
+                      <div className="navbar-nav">
+                        <Link className="nav-link text-light" aria-current="page" href="/">
                           INICIO
                         </Link>
-                        <Link class="nav-link text-light" href="/Factura">
+                        <Link className="nav-link text-light" href="/Factura">
                           Mi recibo
                         </Link>
-                        <Link class="nav-link text-light" href="/About">
+                        <Link className="nav-link text-light" href="/About">
                           Contacto
                         </Link>
                       </div>
@@ -114,10 +114,10 @@ const Footer = () => {
               </div>
               <div className={StylesFooter.column5025}>
                 <h2 className={StylesFooter.footerTitle}>Links</h2>
-                <nav class="navbar navbar-expand-lg bg-body-dark">
-                  <div class="container-fluid">
+                <nav className="navbar navbar-expand-lg bg-body-dark">
+                  <div className="container-fluid">
                     <button
-                      class="navbar-toggler"
+                      className="navbar-toggler"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#navbarNavAltMarkup"
@@ -125,20 +125,20 @@ const Footer = () => {
                       aria-expanded="false"
                       aria-label="Toggle navigation"
                     >
-                      <span class="navbar-toggler-icon"></span>
+                      <span className="navbar-toggler-icon"></span>
                     </button>
                     <div
-                      class="collapse navbar-collapse"
+                      className="collapse navbar-collapse"
                       id="navbarNavAltMarkup"
                     >
-                      <div class="navbar-nav">
-                        <Link class="nav-link text-light" aria-current="page" href="/">
+                      <div className="navbar-nav">
+                        <Link className="nav-link text-light" aria-current="page" href="/">
                           INICIO
                         </Link>
-                        <Link class="nav-link text-light" href="/Factura">
+                        <Link className="nav-link text-light" href="/Factura">
                           Mi recibo
                         </Link>
-                        <Link class="nav-link text-light" href="/About">
+                        <Link className="nav-link text-light" href="/About">
                           Contacto
                         </Link>
                       </div>
@@ -195,10 +195,10 @@ const Footer = () => {
               </div>
               <div className={StylesFooter.column5025}>
                 <h2 className={StylesFooter.footerTitle}>Links</h2>
-                <nav class="navbar navbar-expand-lg bg-body-dark">
-                  <div class="container-fluid">
+                <nav className="navbar navbar-expand-lg bg-body-dark">
+                  <div className="container-fluid">
                     <button
-                      class="navbar-toggler"
+                      className="navbar-toggler"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#navbarNavAltMarkup"
@@ -206,20 +206,20 @@ const Footer = () => {
                       aria-expanded="false"
                       aria-label="Toggle navigation"
                     >
-                      <span class="navbar-toggler-icon"></span>
+                      <span className="navbar-toggler-icon"></span>
                     </button>
                     <div
-                      class="collapse navbar-collapse"
+                      className="collapse navbar-collapse"
                       id="navbarNavAltMarkup"
                     >
-                      <div class="navbar-nav">
-                        <Link class="nav-link text-light" aria-current="page" href="/">
+                      <div className="navbar-nav">
+                        <Link className="nav-link text-light" aria-current="page" href="/">
                           INICIO
                         </Link>
-                        <Link class="nav-link text-light" href="/Factura">
+                        <Link className="nav-link text-light" href="/Factura">
                           Mi recibo
                         </Link>
-                        <Link class="nav-link text-light" href="/About">
+                        <Link className="nav-link text-light" href="/About">
                           Contacto
                         </Link>
                       </div>
