@@ -42,8 +42,8 @@ const ModuloFacturas = () => {
         Header: <i style={{ color: "blue" }}>propietario</i>,
       },
       {
-        accessorKey: "CorreoPropietario",
-        header: "CorreoPropietario",
+        accessorKey: "correo",
+        header: "correo",
         size: 50,
         Header: <i style={{ color: "blue" }}>Correo del propietario</i>,
       },
@@ -100,7 +100,7 @@ const ModuloFacturas = () => {
               data={data ? data : []}
               renderRowActions={({ row, table }) => (
                 <div className="d-flex p-2">
-                  <Button
+                {row.getValue("totalRecibo") == 0 ? (null):( <Button
                     className="btn btn-danger"
                     onClick={async () => {
                       if (
@@ -126,7 +126,8 @@ const ModuloFacturas = () => {
                     }}
                   >
                     <ContactMailIcon />
-                  </Button>
+                  </Button>)
+                }
                 </div>
               )}
               positionActionsColumn="last"
