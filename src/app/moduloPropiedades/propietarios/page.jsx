@@ -175,6 +175,11 @@ const Propietarios = () => {
                       value: true,
                       message: "Nombres requeridos",
                     },
+                    pattern: {
+                      value: /^[A-Za-z\s]*$/,
+                      message:
+                        "El nombre no es valido, solo son letras no numeros",
+                    },
                     maxLength: 100,
                     minLength: 2,
                   })}
@@ -202,6 +207,11 @@ const Propietarios = () => {
                     required: {
                       value: true,
                       message: "Apellidos requeridos",
+                    },
+                    pattern: {
+                      value: /^[A-Za-z\s]*$/,
+                      message:
+                        "Apellidos no válidos, solo son letras no numeros",
                     },
                     maxLength: 100,
                     minLength: 2,
@@ -504,7 +514,7 @@ const Propietarios = () => {
           </Card.Body>
         </Card>
       ) : (
-        <h5>renderizando datos</h5>
+        <h5>Cargando...</h5>
       )}
     </>
   );

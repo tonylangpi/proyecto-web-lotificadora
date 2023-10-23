@@ -124,6 +124,11 @@ const Servicios = () => {
                       value: true,
                       message: "la descripcion del servicio es requerido",
                     },
+                    pattern: {
+                      value: /^[A-Za-z\s]*$/,
+                      message:
+                        "La descripcion no válida, solo son letras no numeros",
+                    },
                     maxLength: 100,
                     minLength: 3,
                   })}

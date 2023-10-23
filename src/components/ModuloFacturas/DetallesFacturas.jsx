@@ -562,7 +562,25 @@ const DetallesFacturas = ({ idEncabezado }) => {
                       )}
                     </Form.Group>
                   </Row>
-                ) : null}
+                ) : (<Row className="mb-3">
+                    <Form.Group as={Col} controlId="formGridDescripcion">
+                      <Form.Label>Cuota</Form.Label>
+                      <Form.Control
+                        type="text"
+                        {...register("cuota", {
+                          required: {
+                            value: true,
+                            message: "Los cuota son requeridos",
+                          },
+                        })}
+                      />
+                      {errors.cuota && (
+                        <span className="text-danger">
+                          {errors.cuota.message}
+                        </span>
+                      )}
+                    </Form.Group>
+                  </Row>)}
                 <Button variant="warning" type="submit">
                   AGREGAR
                 </Button>

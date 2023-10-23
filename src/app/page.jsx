@@ -33,7 +33,7 @@ export default function Home() {
           <div className={stylesP.heroContent}>
             <div className={stylesP.heroText}>
               <h2 className={stylesP.heroWelcomeText}>¿Quienes somos?</h2>
-              <h1 className={stylesP.heroCountry}>Parajes de Maza</h1>
+              <h1 className={stylesP.heroCountry}>ServiHogar</h1>
               <p className={stylesP.heroTextDescription}>
                 Somos una empresa que se dedica a la prestación de servicios
                 inmobiliarios desde 1,996, con más de 8 proyectos desarrollados

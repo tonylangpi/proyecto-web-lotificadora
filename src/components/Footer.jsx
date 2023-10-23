@@ -52,7 +52,7 @@ const Footer = () => {
                     >
                       <div className="navbar-nav">
                         <Link className="nav-link text-light" aria-current="page" href="/">
-                          INICIO
+                          Quienes somos
                         </Link>
                         <Link className="nav-link text-light" href="/Factura">
                           Mi recibo
@@ -84,7 +84,7 @@ const Footer = () => {
                 <h2 className={StylesFooter.footerTitle}>Contacto</h2>
                 <div className={StylesFooter.contactIcon}>
                   <ApartmentIcon/>
-                  <p className="contact__txt">Lotificadora Maza</p>
+                  <p className="contact__txt">Lotificadora ServiHogar</p>
                 </div>
                 <div className={StylesFooter.contactIcon}>
                   <LocalPhoneIcon/>
@@ -92,7 +92,7 @@ const Footer = () => {
                 </div>
                 <div className={StylesFooter.contactIcon}>
                   <EmailIcon/>
-                  <p className="contact__txt">info@parajesdemaza.com</p>
+                  <p className="contact__txt">info@servihogar.com</p>
                 </div>
               </div>
             </div>
@@ -133,7 +133,7 @@ const Footer = () => {
                     >
                       <div className="navbar-nav">
                         <Link className="nav-link text-light" aria-current="page" href="/">
-                          INICIO
+                          Quienes somos
                         </Link>
                         <Link className="nav-link text-light" href="/Factura">
                           Mi recibo
@@ -165,7 +165,7 @@ const Footer = () => {
                 <h2 className={StylesFooter.footerTitle}>Contacto</h2>
                 <div className={StylesFooter.contactIcon}>
                   <ApartmentIcon/>
-                  <p className="contact__txt">Lotificadora Maza</p>
+                  <p className="contact__txt">Lotificadora ServiHogar</p>
                 </div>
                 <div className={StylesFooter.contactIcon}>
                   <LocalPhoneIcon/>
@@ -173,7 +173,7 @@ const Footer = () => {
                 </div>
                 <div className={StylesFooter.contactIcon}>
                   <EmailIcon/>
-                  <p className="contact__txt">info@parajesdemaza.com</p>
+                  <p className="contact__txt">info@servihogar.com</p>
                 </div>
               </div>
             </div>
@@ -214,7 +214,7 @@ const Footer = () => {
                     >
                       <div className="navbar-nav">
                         <Link className="nav-link text-light" aria-current="page" href="/">
-                          INICIO
+                          Quienes somos
                         </Link>
                         <Link className="nav-link text-light" href="/Factura">
                           Mi recibo
@@ -246,7 +246,7 @@ const Footer = () => {
                 <h2 className={StylesFooter.footerTitle}>Contacto</h2>
                 <div className={StylesFooter.contactIcon}>
                   <ApartmentIcon/>
-                  <p className="contact__txt">Lotificadora Maza</p>
+                  <p className="contact__txt">Lotificadora ServiHogar</p>
                 </div>
                 <div className={StylesFooter.contactIcon}>
                   <LocalPhoneIcon/>
@@ -254,7 +254,7 @@ const Footer = () => {
                 </div>
                 <div className={StylesFooter.contactIcon}>
                   <EmailIcon/>
-                  <p className="contact__txt">info@parajesdemaza.com</p>
+                  <p className="contact__txt">info@servihogar.com</p>
                 </div>
               </div>
             </div>
