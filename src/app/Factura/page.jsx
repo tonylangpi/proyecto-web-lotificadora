@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { consultaFacturaCliente } from "../../services/moduloFacturas.js";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
+import StylesFact from './tabs.module.css'
 const MiFactura = () => {
   const [data, setData] = useState([]);
   const {
@@ -45,7 +46,7 @@ const MiFactura = () => {
     <>
     <Toaster position="top-center" offset="100px" />
       <Form onSubmit={enviar}>
-        <h4>MI RECIBO DE MES GASTOS</h4>
+        <h4>VER MI FACTURA</h4>
         <Row className="align-items-center justify-content-center">
           <Col xs="auto">
             <Form.Label htmlFor="inlineFormInput">
@@ -70,9 +71,9 @@ const MiFactura = () => {
             )}
           </Col>
           <Col xs="auto">
-            <Button type="submit" className="mb-2">
+            <button type="submit" className={StylesFact.Btn}>
               Buscar
-            </Button>
+            </button>
           </Col>
         </Row>
       </Form>

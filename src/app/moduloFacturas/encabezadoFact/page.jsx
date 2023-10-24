@@ -4,9 +4,19 @@ import { Toaster, toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { MaterialReactTable } from "material-react-table";
 import SettingsIcon from "@mui/icons-material/Settings";
-import DeleteIcon from "@mui/icons-material/Delete";
-import OfflinePinIcon from '@mui/icons-material/OfflinePin';
-import { Form, Col, Row, Button, Modal, Card } from "react-bootstrap";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import OfflinePinIcon from "@mui/icons-material/OfflinePin";
+import {
+  Form,
+  Col,
+  Row,
+  Button,
+  Modal,
+  Card,
+  Tooltip,
+  OverlayTrigger,
+} from "react-bootstrap";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -31,12 +41,13 @@ const EncabezadoFactura = () => {
   );
   const { data: session } = useSession();
   let idUsuario = session?.user?.id;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-    setValue
+    setValue,
   } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -95,7 +106,7 @@ const EncabezadoFactura = () => {
         header: "totalRecibo",
         size: 50,
         Header: <i style={{ color: "red" }}>Total a Pagar</i>,
-      }
+      },
     ],
     []
   );
@@ -132,7 +143,15 @@ const EncabezadoFactura = () => {
   //configuracion del envio de datos post crear un PROPIETARIO NUEVO
   const enviar = handleSubmit(async (data) => {
     try {
-      const res = await createFacturasEncabezado(data);
+      const date = new Date();
+      const month = date.getMonth() + 1;
+      let valores = {
+        Mes: month,
+        idVivienda: data?.idVivienda,
+        Estado: 2,
+        idUsuario: data?.idUsuario,
+      };
+      const res = await createFacturasEncabezado(valores);
       toast(res?.message);
       mutate();
       reset();
@@ -291,39 +310,6 @@ const EncabezadoFactura = () => {
                 <Card.Body>
                   <Form onSubmit={enviar}>
                     <Row className="mb-3">
-                      <Form.Group as={Col} controlId="formGridMes">
-                        <Form.Label>SELECCIONA UN MES</Form.Label>
-                        <Form.Select
-                          aria-label="Default select example"
-                          name="Mes"
-                          {...register("Mes", {
-                            required: {
-                              value: true,
-                              message: "El mes del recibo es requerido",
-                            },
-                          })}
-                        >
-                          <option value={1}>ENERO</option>
-                          <option value={2}>FEBRERO</option>
-                          <option value={3}>MARZO</option>
-                          <option value={4}>ABRIL</option>
-                          <option value={5}>MAYO</option>
-                          <option value={6}>JUNIO</option>
-                          <option value={7}>JULIO</option>
-                          <option value={8}>AGOSTO</option>
-                          <option value={9}>SEPTIEMBRE</option>
-                          <option value={10}>OCTUBRE</option>
-                          <option value={11}>NOVIEMBRE</option>
-                          <option value={12}>DICIEMBRE</option>
-                        </Form.Select>
-                        {errors.Mes && (
-                          <span className="text-danger">
-                            {errors.Mes.message}
-                          </span>
-                        )}
-                      </Form.Group>
-                    </Row>
-                    <Row className="mb-3">
                       <Form.Group as={Col} controlId="formGridViviendas">
                         <Form.Label>SELECCIONA LA VIVIENDA</Form.Label>
                         <Button variant="primary" onClick={handleShow}>
@@ -348,30 +334,6 @@ const EncabezadoFactura = () => {
                         {errors.idVivienda && (
                           <span className="text-danger">
                             {errors.idVivienda.message}
-                          </span>
-                        )}
-                      </Form.Group>
-                    </Row>
-                    <Row className="mb-3">
-                      <Form.Group as={Col} controlId="formGridEstados">
-                        <Form.Label>ESTADO FACTURA</Form.Label>
-                        <Form.Select
-                          aria-label="Default select example"
-                          name="Estados"
-                          {...register("Estado", {
-                            required: {
-                              value: true,
-                              message:
-                                "El Estado de la factura o recibo es requerido",
-                            },
-                          })}
-                        >
-                          <option value={1}>PAGADA</option>
-                          <option value={2}>NO PAGADA</option>
-                        </Form.Select>
-                        {errors.Estado && (
-                          <span className="text-danger">
-                            {errors.Estado.message}
                           </span>
                         )}
                       </Form.Group>
@@ -402,41 +364,87 @@ const EncabezadoFactura = () => {
                     data={data?.encabezados ? data?.encabezados : []}
                     renderRowActions={({ row, table }) => (
                       <div className="d-flex p-2">
-                        <Button
-                          className="btn btn-danger"
-                          onClick={async () => {
-                            if (
-                              !confirm(
-                                `Deseas eliminar el encabezado: ${row.getValue(
-                                  "CodigoEncabezado"
-                                )}`
-                              )
-                            ) {
-                              return;
+                        {row.getValue("EstadoPago") == "PAGADA" ||
+                        "ANULADA" ? (
+                          <OverlayTrigger
+                              placement="right"
+                              delay={{ show: 250, hide: 400 }}
+                              overlay={
+                                <Tooltip>
+                                  <strong>VER</strong>.
+                                </Tooltip>
+                              }
+                            >
+                              <Button
+                                className="btn btn-danger"
+                                onClick={async () => {
+                                  router.push(`/moduloFacturas/verDetallesFact/${row.getValue("CodigoEncabezado")}`)
+                                }}
+                              >
+                                <RemoveRedEyeIcon />
+                              </Button>
+                            </OverlayTrigger>
+                        ) : (
+                          null
+                        )}
+                        {
+                          row.getValue("EstadoPago") == "NO PAGADA" ? (<>
+                          <OverlayTrigger
+                              placement="right"
+                              delay={{ show: 250, hide: 400 }}
+                              overlay={
+                                <Tooltip>
+                                  <strong>ANULAR</strong>.
+                                </Tooltip>
+                              }
+                            >
+                              <Button
+                                className="btn btn-danger"
+                                onClick={async () => {
+                                  if (
+                                    !confirm(
+                                      `Deseas anular el esta factura : ${row.getValue(
+                                        "CodigoEncabezado"
+                                      )}`
+                                    )
+                                  ) {
+                                    return;
+                                  }
+                                  let res = await DeleteEncabezados(
+                                    row.getValue("CodigoEncabezado")
+                                  );
+                                  toast(res?.message, {
+                                    style: { background: "red" },
+                                  });
+                                  mutate();
+                                }}
+                              >
+                                <HighlightOffIcon />
+                              </Button>
+                            </OverlayTrigger>
+                            <OverlayTrigger
+                            placement="right"
+                            overlay={
+                              <Tooltip>
+                                <strong>AgregarDetalles</strong>.
+                              </Tooltip>
                             }
-                            let res = await DeleteEncabezados(
-                              row.getValue("CodigoEncabezado")
-                            );
-                            toast(res?.message, {
-                              style: { background: "red" },
-                            });
-                            mutate();
-                          }}
-                        >
-                          <DeleteIcon />
-                        </Button>
-                        <Button
-                          className="btn btn-warning"
-                          onClick={() => {
-                            router.push(
-                              `/moduloFacturas/encabezadoFact/${row.getValue(
-                                "CodigoEncabezado"
-                              )}`
-                            );
-                          }}
-                        >
-                          <SettingsIcon />
-                        </Button>
+                          >
+                            <Button
+                              className="btn btn-warning"
+                              onClick={() => {
+                                router.push(
+                                  `/moduloFacturas/encabezadoFact/${row.getValue(
+                                    "CodigoEncabezado"
+                                  )}`
+                                );
+                              }}
+                            >
+                              <SettingsIcon />
+                            </Button>
+                          </OverlayTrigger>
+                          </>) : (null)
+                        }
                       </div>
                     )}
                     localization={{

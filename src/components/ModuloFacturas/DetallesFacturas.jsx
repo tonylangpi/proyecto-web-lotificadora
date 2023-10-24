@@ -3,12 +3,15 @@ import { Form, Button, Row, Col, Card, Modal } from "react-bootstrap";
 import { Toaster, toast } from "sonner";
 import { MaterialReactTable } from "material-react-table";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { get, useForm } from "react-hook-form";
 import { useMemo, useState } from "react";
 import useSWR from "swr";
 import DeleteIcon from "@mui/icons-material/Delete";
 import OfflinePinIcon from "@mui/icons-material/OfflinePin";
-import {createDetallesFactura, DeleteDetalles}  from "../../services/moduloFacturas.js"
+import {
+  createDetallesFactura,
+  DeleteDetalles,
+} from "../../services/moduloFacturas.js";
 const DetallesFacturas = ({ idEncabezado }) => {
   const [show, setShow] = useState(false);
   const [inputs, setInputs] = useState(false);
@@ -38,6 +41,7 @@ const DetallesFacturas = ({ idEncabezado }) => {
       idReciboGastoEncabezado: idEncabezado ? idEncabezado : "",
       idServicio: 0,
       descripcion: "",
+      tipoServicio: "",
       kwt: "",
       tarifa: "",
       cargomensual: "",
@@ -100,15 +104,49 @@ const DetallesFacturas = ({ idEncabezado }) => {
         muiTableHeadCellProps: { sx: { color: "green" } }, //custom props
         Cell: ({ renderedCellValue }) => <strong>{renderedCellValue}</strong>,
       },
+      {
+        accessorKey: "cuotaBase", //simple recommended way to define a column
+        header: "cuota",
+        enableEditing: false, //disable editing on this column
+        enableSorting: false,
+        enableHiding: false,
+        size: 50,
+        muiTableHeadCellProps: { sx: { color: "green" } }, //custom props
+        Cell: ({ renderedCellValue }) => <strong>{renderedCellValue}</strong>,
+      },
+      {
+        accessorKey: "Estado", //simple recommended way to define a column
+        header: "Estado",
+        enableEditing: false, //disable editing on this column
+        enableSorting: false,
+        enableHiding: false,
+        size: 50,
+        muiTableHeadCellProps: { sx: { color: "green" } }, //custom props
+        Cell: ({ renderedCellValue }) => <strong>{renderedCellValue}</strong>,
+      },
+      {
+        accessorKey: "TipoServicio", //simple recommended way to define a column
+        header: "TipoServicio",
+        enableEditing: false, //disable editing on this column
+        enableSorting: false,
+        enableHiding: false,
+        size: 50,
+        muiTableHeadCellProps: { sx: { color: "green" } }, //custom props
+        Cell: ({ renderedCellValue }) => <strong>{renderedCellValue}</strong>,
+      },
     ],
     []
   );
   const guardar = handleSubmit(async (data) => {
     try {
-      const res = await createDetallesFactura(data);
-      toast(res?.message);
-      reset();
-      mutate(); 
+      if(data.cuota == 0){
+        toast("la cuota no puede ser 0")
+      }else{
+        const res = await createDetallesFactura(data);
+        toast(res?.message);
+        reset();
+        mutate();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -146,6 +184,10 @@ const DetallesFacturas = ({ idEncabezado }) => {
                   onClick={async () => {
                     setValue("idServicio", row.getValue("idServicio"));
                     setValue("descripcion", row.getValue("descripcion"));
+                    setValue("tipoServicio", row.getValue("TipoServicio"));
+                    if (row.getValue("TipoServicio") == "FIJO") {
+                      setValue("cuota", row.getValue("cuotaBase"));
+                    }
                     handleClose();
                   }}
                 >
@@ -308,40 +350,67 @@ const DetallesFacturas = ({ idEncabezado }) => {
                       </span>
                     )}
                   </Form.Group>
-                  <Form.Group as={Col} controlId="formGridDescripcion">
-                    <Form.Label>Descripcion servicio</Form.Label>
-                    <Form.Control
-                      type="text"
-                      disabled
-                      readOnly
-                      {...register("descripcion", {
-                        required: {
-                          value: true,
-                          message: "La descripcion del servicio es requerida",
-                        },
-                      })}
-                    />
-                    {errors.descripcion && (
-                      <span className="text-danger">
-                        {errors.descripcion.message}
-                      </span>
-                    )}
-                  </Form.Group>
+                  <Row className="mb-3">
+                    <Form.Group as={Col} controlId="formGridDescripcion">
+                      <Form.Label>Descripcion servicio</Form.Label>
+                      <Form.Control
+                        type="text"
+                        disabled
+                        readOnly
+                        {...register("descripcion", {
+                          required: {
+                            value: true,
+                            message: "La descripcion del servicio es requerida",
+                          },
+                        })}
+                      />
+                      {errors.descripcion && (
+                        <span className="text-danger">
+                          {errors.descripcion.message}
+                        </span>
+                      )}
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="formGridDescripcion">
+                      <Form.Label>Tipo Servicio</Form.Label>
+                      <Form.Control
+                        type="text"
+                        disabled
+                        readOnly
+                        {...register("tipoServicio", {
+                          required: {
+                            value: true,
+                            message: "el tipoServicio  es requerida",
+                          },
+                        })}
+                      />
+                      {errors.tipoServicio && (
+                        <span className="text-danger">
+                          {errors.tipoServicio.message}
+                        </span>
+                      )}
+                    </Form.Group>
+                  </Row>
                 </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="formGridVerificar">
                     <Button
                       variant="primary"
                       onClick={() => {
-                        let serviciodesc = getValues("descripcion");
-                        let estado = serviciodesc.includes(
-                          "electrica" ||
-                            "luz" ||
-                            "Electricidad" ||
-                            "LUZ" ||
-                            "ELECTRICA"
+                        
+                          let serviciodesc = getValues("descripcion");
+                        const keywords = [
+                          "electrica",
+                          "luz",
+                          "Electricidad",
+                          "LUZ",
+                          "ELECTRICA",
+                          "ENERGIA",
+                          "ELECTRICIDAD",
+                        ];
+                        const showInputs = keywords.some((keyword) =>
+                        serviciodesc.includes(keyword)
                         );
-                        estado ? changeInputs() : setInputs(false);
+                        showInputs ? changeInputs() : setInputs(false);
                       }}
                     >
                       Verificar Servicio
@@ -383,7 +452,7 @@ const DetallesFacturas = ({ idEncabezado }) => {
                             },
                             pattern: {
                               value: /^[0-9.]+$/,
-                              message: "Telefono no válido, solo numeros",
+                              message: "Tarifa no válido, solo numeros",
                             },
                           })}
                         />
@@ -404,7 +473,7 @@ const DetallesFacturas = ({ idEncabezado }) => {
                             },
                             pattern: {
                               value: /^[0-9.]+$/,
-                              message: "Telefono no válido, solo numeros",
+                              message: "cargo mensual no válido, solo numeros",
                             },
                           })}
                         />
@@ -425,7 +494,8 @@ const DetallesFacturas = ({ idEncabezado }) => {
                             },
                             pattern: {
                               value: /^[0-9.]+$/,
-                              message: "Telefono no válido, solo numeros",
+                              message:
+                                "valor de alumbrado no válido, solo numeros",
                             },
                           })}
                         />
@@ -445,8 +515,8 @@ const DetallesFacturas = ({ idEncabezado }) => {
                             let tarifa = parseFloat(getValues("tarifa"));
                             let cargo = parseFloat(getValues("cargomensual"));
                             let alumbrado = parseFloat(getValues("alumbrado"));
-                            let consumo = kwt * tarifa + cargo + alumbrado;
-                            setValue("cuota", consumo);
+                            let consumo = isNaN(kwt * tarifa + cargo + alumbrado) ? 0 : kwt * tarifa + cargo + alumbrado;
+                            setValue("cuota",consumo);
                           }}
                         >
                           Calcular
@@ -472,7 +542,7 @@ const DetallesFacturas = ({ idEncabezado }) => {
                       </Form.Group>
                     </Row>
                   </>
-                ) : (
+                ) : getValues("tipoServicio") == "FIJO" ? (
                   <Row className="mb-3">
                     <Form.Group as={Col} controlId="formGridDescripcion">
                       <Form.Label>Cuota</Form.Label>
@@ -492,7 +562,25 @@ const DetallesFacturas = ({ idEncabezado }) => {
                       )}
                     </Form.Group>
                   </Row>
-                )}
+                ) : (<Row className="mb-3">
+                    <Form.Group as={Col} controlId="formGridDescripcion">
+                      <Form.Label>Cuota</Form.Label>
+                      <Form.Control
+                        type="text"
+                        {...register("cuota", {
+                          required: {
+                            value: true,
+                            message: "Los cuota son requeridos",
+                          },
+                        })}
+                      />
+                      {errors.cuota && (
+                        <span className="text-danger">
+                          {errors.cuota.message}
+                        </span>
+                      )}
+                    </Form.Group>
+                  </Row>)}
                 <Button variant="warning" type="submit">
                   AGREGAR
                 </Button>
@@ -532,18 +620,16 @@ const DetallesFacturas = ({ idEncabezado }) => {
                     <Button
                       className="btn btn-danger"
                       onClick={async () => {
-                        if (
-                        !confirm(
-                          `Deseas eliminar el detalle`
-                        )
-                      ) {
-                        return;
-                      }
-                       
-                      let res = await DeleteDetalles(row.getValue("idDetalle"));
-                      toast(res?.message, { style: { background: "red" } });
-                      mutate();
-                    }}
+                        if (!confirm(`Deseas eliminar el detalle`)) {
+                          return;
+                        }
+
+                        let res = await DeleteDetalles(
+                          row.getValue("idDetalle")
+                        );
+                        toast(res?.message, { style: { background: "red" } });
+                        mutate();
+                      }}
                     >
                       <DeleteIcon />
                     </Button>
