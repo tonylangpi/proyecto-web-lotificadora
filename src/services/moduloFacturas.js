@@ -78,3 +78,16 @@ export async function enviarCorreoPropietario(datos){
         console.log(error); 
     }
 }; 
+
+export async function pagarFacturas(datos){
+    try {
+        const {data} = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}facturas/pagarFactura`,datos,{
+            headers:{
+                apiKey: process.env.NEXT_PUBLIC_API_KEY
+            }
+        }); 
+        return data; 
+    } catch (error) {
+        console.log(error); 
+    }
+}; 

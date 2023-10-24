@@ -115,3 +115,55 @@ export async function DeleteViviendas(id){
     console.log(error);
   }
 }
+/*SERVICIOS CRUD LLAMADA A FUNCIONES */
+export async function createServicios(valores){
+    try {
+        const{data} = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}servicios/create`,valores,{
+            headers:{
+                apiKey: process.env.NEXT_PUBLIC_API_KEY
+            }
+        });
+        return data; 
+    } catch (error) {
+        console.log(error); 
+    }
+}
+
+export async function updateStatusServicios(id){
+    try {
+        const{data} = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}servicios/delete/${id}`,{
+            headers:{
+                apiKey: process.env.NEXT_PUBLIC_API_KEY
+            }
+        });
+        return data; 
+    } catch (error) {
+        
+    }
+};
+
+export async function GetDetalleServicios(codigo){
+    try {
+        const {data} = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}servicios/servicioById/${codigo}`,{
+            headers:{
+                 apiKey: process.env.NEXT_PUBLIC_API_KEY
+            },
+        });
+        return data; 
+    } catch (error) {
+        console.log(error); 
+    }
+};
+
+export async function EditDetalleServicios(values){
+    try {
+        const{data} = await axios.put(`${process.env.NEXT_PUBLIC_API_URL}servicios/edit`,values,{
+            headers:{
+                apiKey: process.env.NEXT_PUBLIC_API_KEY
+            }
+        });
+        return data; 
+    } catch (error) {
+        console.log(error); 
+    }
+};

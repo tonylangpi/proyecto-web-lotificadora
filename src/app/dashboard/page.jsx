@@ -2,7 +2,7 @@
 import {  Card } from "react-bootstrap";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import Logo from "../../../public/logomaza.jpg";
+import Logo from "../../../public/Servihogar.png";
 const Dashboard = () => {
   const{data:session} = useSession(); 
   return (
