@@ -178,7 +178,7 @@ const Propietarios = () => {
                     pattern: {
                       value: /^[A-Za-z\s]*$/,
                       message:
-                        "El nombre no es valido, solo son letras no numeros",
+                        "El nombre no es valido, solo son letras no numeros ni tildes ni ñ",
                     },
                     maxLength: 100,
                     minLength: 2,
@@ -211,7 +211,7 @@ const Propietarios = () => {
                     pattern: {
                       value: /^[A-Za-z\s]*$/,
                       message:
-                        "Apellidos no válidos, solo son letras no numeros",
+                        "Apellidos no válidos, solo son letras no numeros ni tildes ni ñ",
                     },
                     maxLength: 100,
                     minLength: 2,

@@ -406,6 +406,8 @@ const DetallesFacturas = ({ idEncabezado }) => {
                           "ELECTRICA",
                           "ENERGIA",
                           "ELECTRICIDAD",
+                          "Energia",
+                          "Electrica"
                         ];
                         const showInputs = keywords.some((keyword) =>
                         serviciodesc.includes(keyword)
