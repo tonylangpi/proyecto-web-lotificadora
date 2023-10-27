@@ -7,11 +7,5 @@ const conn = createPool({
     port:process.env.BD_PORT,
     database:process.env.BD_DATABASE
 });
-conn.getConnection((error) => {
-    if (error) {
-      console.error('El error de conexión es: ' + error);
-      return;
-    }
-    console.log('Conectado a la base de datos');
-  });
+
 export {conn}

@@ -35,15 +35,7 @@ export const authOptions = {
   },
   pages: {
     signIn : '/Login'
-  },
-  // rateLimit: {
-  //   ip: {
-  //     // Límite de peticiones por hora
-  //     limit: 4,
-  //     // Tiempo de espera en segundos
-  //     delay: 60,
-  //   }
-  // }
+  }
 }
 const handler = NextAuth(authOptions);
 
