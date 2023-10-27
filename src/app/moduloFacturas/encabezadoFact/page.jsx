@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { MaterialReactTable } from "material-react-table";
 import SettingsIcon from "@mui/icons-material/Settings";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import OfflinePinIcon from "@mui/icons-material/OfflinePin";
 import {
   Form,
@@ -364,32 +364,33 @@ const EncabezadoFactura = () => {
                     data={data?.encabezados ? data?.encabezados : []}
                     renderRowActions={({ row, table }) => (
                       <div className="d-flex p-2">
-                        {row.getValue("EstadoPago") == "PAGADA" ||
-                        "ANULADA" ? (
+                        {row.getValue("EstadoPago") == "PAGADA" || "ANULADA" ? (
                           <OverlayTrigger
-                              placement="right"
-                              delay={{ show: 250, hide: 400 }}
-                              overlay={
-                                <Tooltip>
-                                  <strong>VER</strong>.
-                                </Tooltip>
-                              }
+                            placement="right"
+                            delay={{ show: 250, hide: 400 }}
+                            overlay={
+                              <Tooltip>
+                                <strong>VER</strong>.
+                              </Tooltip>
+                            }
+                          >
+                            <Button
+                              className="btn btn-danger"
+                              onClick={async () => {
+                                router.push(
+                                  `/moduloFacturas/verDetallesFact/${row.getValue(
+                                    "CodigoEncabezado"
+                                  )}`
+                                );
+                              }}
                             >
-                              <Button
-                                className="btn btn-danger"
-                                onClick={async () => {
-                                  router.push(`/moduloFacturas/verDetallesFact/${row.getValue("CodigoEncabezado")}`)
-                                }}
-                              >
-                                <RemoveRedEyeIcon />
-                              </Button>
-                            </OverlayTrigger>
-                        ) : (
-                          null
-                        )}
-                        {
-                          row.getValue("EstadoPago") == "NO PAGADA" ? (<>
-                          <OverlayTrigger
+                              <RemoveRedEyeIcon />
+                            </Button>
+                          </OverlayTrigger>
+                        ) : null}
+                        {row.getValue("EstadoPago") == "NO PAGADA" ? (
+                          <>
+                            <OverlayTrigger
                               placement="right"
                               delay={{ show: 250, hide: 400 }}
                               overlay={
@@ -423,29 +424,54 @@ const EncabezadoFactura = () => {
                               </Button>
                             </OverlayTrigger>
                             <OverlayTrigger
-                            placement="right"
-                            overlay={
-                              <Tooltip>
-                                <strong>AgregarDetalles</strong>.
-                              </Tooltip>
-                            }
-                          >
-                            <Button
-                              className="btn btn-warning"
-                              onClick={() => {
-                                router.push(
-                                  `/moduloFacturas/encabezadoFact/${row.getValue(
-                                    "CodigoEncabezado"
-                                  )}`
-                                );
-                              }}
+                              placement="right"
+                              overlay={
+                                <Tooltip>
+                                  <strong>AgregarDetalles</strong>.
+                                </Tooltip>
+                              }
                             >
-                              <SettingsIcon />
-                            </Button>
-                          </OverlayTrigger>
-                          </>) : (null)
-                        }
+                              <Button
+                                className="btn btn-warning"
+                                onClick={() => {
+                                  router.push(
+                                    `/moduloFacturas/encabezadoFact/${row.getValue(
+                                      "CodigoEncabezado"
+                                    )}`
+                                  );
+                                }}
+                              >
+                                <SettingsIcon />
+                              </Button>
+                            </OverlayTrigger>
+                          </>
+                        ) : null}
                       </div>
+                    )}
+                    renderTopToolbarCustomActions={() => (
+                      <Button
+                        onClick={() => {
+                          fetch(
+                            `${process.env.NEXT_PUBLIC_API_URL}facturas/generarReporte`,
+                            {
+                              headers: {
+                                apiKey: process.env.NEXT_PUBLIC_API_KEY,
+                              },
+                            }
+                          ) // FETCH BLOB FROM IT
+                            .then((response) => response.blob())
+                            .then((blob) => {
+                              // RETRIEVE THE BLOB AND CREATE LOCAL URL
+                              var _url = window.URL.createObjectURL(blob);
+                              window.open(_url, "_blank").focus(); // window.open + focus
+                            })
+                            .catch((err) => {
+                              console.log(err);
+                            });
+                        }}
+                      >
+                        Reporte
+                      </Button>
                     )}
                     localization={{
                       actions: "Acciones",
