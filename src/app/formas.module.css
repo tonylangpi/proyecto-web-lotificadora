@@ -47,7 +47,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: rgb(241, 241, 234);
+  background-color: rgb(254, 254, 252);
   gap:30px
 }
 .tarjeta {
@@ -55,8 +55,8 @@
   height: 254px;
   border-radius: 20px;
   background: #f8fefd;
-  box-shadow: 15px 15px 30px #100e0e,
-             -15px -15px 30px #ffffff;
+  box-shadow: 15px 15px 30px #151414,
+             -15px -15px 30px #131212;
 }
 .image{
   width: 150px;
